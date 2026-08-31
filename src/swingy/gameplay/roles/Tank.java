@@ -21,6 +21,7 @@ public class Tank extends Role {
     @Override
     protected Stats levelUp() {
         this.basestats = new Stats(basestats.getHp() + this.lhp, basestats.getAd() + this.lad, basestats.getArmor() + this.larm);
+        this.setNewlevel();
 
         return (basestats);
     }

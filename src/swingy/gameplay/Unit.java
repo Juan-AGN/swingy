@@ -1,11 +1,16 @@
 package swingy.gameplay;
 
+import java.util.ArrayList;
+
 public class Unit {
     protected Role unitrole;
-    protected double exp = 0;
-    protected double tolevel = 100;
+
     protected double currenthp;
     private String name = "";
+    private ArrayList<Item> inventory = new ArrayList<Item>();
+    private Item helm;
+    private Item armor;
+    private Item weapon;
 
     protected double getHit(double oatk) {
         double dmg = oatk - unitrole.getStats().getArmor();
