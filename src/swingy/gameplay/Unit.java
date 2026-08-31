@@ -5,6 +5,7 @@ public class Unit {
     protected double exp = 0;
     protected double tolevel = 100;
     protected double currenthp;
+    private String name = "";
 
     protected double getHit(double oatk) {
         double dmg = oatk - unitrole.getStats().getArmor();
@@ -23,5 +24,9 @@ public class Unit {
 
     public Stats getStats() {
         return (this.getStats());
+    }
+
+    public String getName() {
+        return (name);
     }
 }
