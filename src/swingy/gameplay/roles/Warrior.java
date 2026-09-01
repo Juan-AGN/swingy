@@ -3,12 +3,12 @@ import swingy.gameplay.Role;
 import swingy.gameplay.Stats;
 
 public class Warrior extends Role {
-    final private double chp = 500;
+    final private double chp = 250;
     final private double cad = 50;
     final private double carm = 50;
-    final private double lhp = 300;
-    final private double lad = 30;
-    final private double larm = 30;
+    final private double lhp = 100;
+    final private double lad = 20;
+    final private double larm = 20;
 
     Warrior() {
         this.basestats = new Stats(chp, cad, carm);

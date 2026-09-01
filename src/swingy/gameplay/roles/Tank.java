@@ -3,12 +3,12 @@ import swingy.gameplay.Role;
 import swingy.gameplay.Stats;
 
 public class Tank extends Role {
-    final private double chp = 600;
-    final private double cad = 20;
+    final private double chp = 300;
+    final private double cad = 30;
     final private double carm = 70;
-    final private double lhp = 300;
+    final private double lhp = 100;
     final private double lad = 10;
-    final private double larm = 50;
+    final private double larm = 30;
 
     Tank() {
         this.basestats = new Stats(chp, cad, carm);
