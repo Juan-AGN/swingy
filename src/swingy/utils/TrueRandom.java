@@ -5,15 +5,18 @@ import java.security.SecureRandom;
 import java.security.NoSuchAlgorithmException;
 
 public final class TrueRandom {
-    public static void getrandom(String[] args) {
+    public static int getrandom(int max) {
+        if (max <= 0)
+            return (0);
+
         try {
             SecureRandom secureRandom = SecureRandom.getInstanceStrong();
-            
-            int randomNum = secureRandom.nextInt(100);
-            System.out.println("Random number: " + randomNum);
-            
+            int randomNum = secureRandom.nextInt(max);
+
+            return (randomNum);
         } catch (NoSuchAlgorithmException e) {
-            System.err.println("Strong algorithm not available.");
+            System.err.println("No strong SecureRandom algorithm available.aa");
         }
+        return (0);
     }
 }

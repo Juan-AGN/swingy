@@ -1,9 +1,12 @@
 package swingy.gameplay.mapgenerator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+
+import swingy.utils.TrueRandom;
 
 public final class TileGenerator {
 	public static Tile rotateClockwise(Tile tile) {
@@ -62,7 +65,7 @@ public final class TileGenerator {
 			current = rotateClockwise(current);
 		}
 
-		return result;
+		return (result);
 	}
 
 	public static Tile mirror(Tile tile) {
@@ -98,7 +101,7 @@ public final class TileGenerator {
 		return new Tile(newCells, newMask);
 	}
 
-	public static List<Tile> allVariants(Tile tile, boolean includeMirror) {
+	public static Tile[] allVariants(Tile tile, boolean includeMirror) {
 		Set<Tile> variants = new LinkedHashSet<>();
 
 		variants.addAll(rotations(tile));
@@ -107,6 +110,54 @@ public final class TileGenerator {
 			variants.addAll(rotations(mirror(tile)));
 		}
 
-		return new ArrayList<>(variants);
+		return (variants.toArray(Tile[]::new));
 	}
+
+    public static Tile getRandomMinConnections(int minConnections) {
+        if (minConnections < 1 || minConnections > 4)
+            return (Tiles.EMPTY);
+        Tile[] validTiles = Arrays.stream(Tiles.ALL).filter(tile -> Integer.bitCount(tile.getConnections()) >= minConnections).toArray(Tile[]::new);
+
+        return (validTiles[TrueRandom.getrandom(validTiles.length)]);
+    }
+
+    public static Tile getRandomMinLine() {
+        Tile[] validTiles = Arrays.stream(Tiles.ALL).filter(tile -> (tile.getConnections() & 5) == 5 || (tile.getConnections() & 10) == 10).toArray(Tile[]::new);
+
+        return (validTiles[TrueRandom.getrandom(validTiles.length)]);
+    }
+
+    public static Tile getRandomMinCurve() {
+        Tile[] validTiles = Arrays.stream(Tiles.ALL).filter(tile -> (Integer.bitCount(tile.getConnections()) >= 2 && tile.getConnections() != 5 && tile.getConnections() != 10)).toArray(Tile[]::new);
+
+        return (validTiles[TrueRandom.getrandom(validTiles.length)]);
+    }
+
+    /**
+     * Gives back a random tile with the asked for connections.
+     *
+     * @param connections bitmap of connections (1 = TOP | 2 = RIGHT | 4 = BOTTOM | 8 = LEFT), you can also use the enums on tiles class, this bitmap normaly shouldnt include the prio.
+     * @param prio same as connections, but prioritary, connection can have, prio must have.
+     * @param nconnections num of connections (1 for one connection, 2 for two etc...).
+     */
+
+    public static Tile getRandomSpecConnect(int connections, int prio, int nconnections) {
+        Tile tile;
+        Tile[] tileList;
+
+        if ((prio | connections) == 5 || (prio | connections) == 10)
+            tile = getRandomMinLine();
+        else if (nconnections >= 2)
+            tile = getRandomMinCurve();
+        else
+            tile = getRandomMinConnections(nconnections);
+
+        tileList = TileGenerator.allVariants(tile, true);
+        tileList = Arrays.stream(tileList).filter(ttile -> ((ttile.getConnections() & prio) == prio && (ttile.getConnections() & connections) != 0) && Integer.bitCount(ttile.getConnections()) >= nconnections).toArray(Tile[]::new);
+        
+        if (tileList.length == 0)
+            return getRandomMinConnections(4);
+
+        return(tileList[TrueRandom.getrandom(tileList.length)]);
+    }
 }
