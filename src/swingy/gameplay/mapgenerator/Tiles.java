@@ -495,4 +495,98 @@ public final class Tiles {
         SHAPE_8_02,
         SHAPE_8_03
     };
+
+    public static final Tile[] ALL_CLOSED = {
+ 
+        // ---- <= 4 open cells (x3) ----
+        STRAIGHT, STRAIGHT, STRAIGHT,
+        CORNER, CORNER, CORNER,
+        SQUARE, SQUARE, SQUARE,
+        DEAD_END, DEAD_END, DEAD_END,
+        SHORTER_DEAD_END, SHORTER_DEAD_END, SHORTER_DEAD_END,
+        LARGER_DEAD_END, LARGER_DEAD_END, LARGER_DEAD_END,
+        SHAPE_2_01, SHAPE_2_01, SHAPE_2_01,
+        SHAPE_3_01, SHAPE_3_01, SHAPE_3_01,
+        SHAPE_3_02, SHAPE_3_02, SHAPE_3_02,
+        SHAPE_3_03, SHAPE_3_03, SHAPE_3_03,
+        SHAPE_3_04, SHAPE_3_04, SHAPE_3_04,
+        SHAPE_4_01, SHAPE_4_01, SHAPE_4_01,
+        SHAPE_4_02, SHAPE_4_02, SHAPE_4_02,
+        SHAPE_4_03, SHAPE_4_03, SHAPE_4_03,
+ 
+        // ---- 5 open cells (x2) ----
+        T_JUNCTION, T_JUNCTION,
+        CROSS, CROSS,
+        WEIRDER_PATH, WEIRDER_PATH,
+        SHAPE_5_01, SHAPE_5_01,
+        SHAPE_5_02, SHAPE_5_02,
+        SHAPE_5_03, SHAPE_5_03,
+        SHAPE_5_04, SHAPE_5_04,
+        SHAPE_5_05, SHAPE_5_05,
+        SHAPE_5_06, SHAPE_5_06,
+        SHAPE_5_07, SHAPE_5_07,
+ 
+        // ---- 6 open cells (x1) ----
+        SHAPE_6_01,
+        SHAPE_6_02,
+        SHAPE_6_03,
+        SHAPE_6_04,
+        SHAPE_6_05,
+        SHAPE_6_06,
+        SHAPE_6_07,
+        SHAPE_6_08,
+ 
+        // ---- 7 open cells (x1) ----
+        WEIRD_PATH,
+        SEMICROSS,
+        SENIDEMICROSS,
+        UOSEMIDEMICROSS,
+        SHAPE_7_01,
+        SHAPE_7_02,
+        SHAPE_7_03
+    };
+
+    public static final Tile[] ALL_TIGHT = {
+ 
+        // ---- <= 4 open cells (x3) ----
+        STRAIGHT, STRAIGHT, STRAIGHT,
+        CORNER, CORNER, CORNER,
+        SQUARE, SQUARE, SQUARE,
+        DEAD_END, DEAD_END, DEAD_END,
+        SHORTER_DEAD_END, SHORTER_DEAD_END, SHORTER_DEAD_END,
+        LARGER_DEAD_END, LARGER_DEAD_END, LARGER_DEAD_END,
+        SHAPE_2_01, SHAPE_2_01, SHAPE_2_01,
+        SHAPE_3_01, SHAPE_3_01, SHAPE_3_01,
+        SHAPE_3_02, SHAPE_3_02, SHAPE_3_02,
+        SHAPE_3_03, SHAPE_3_03, SHAPE_3_03,
+        SHAPE_3_04, SHAPE_3_04, SHAPE_3_04,
+        SHAPE_4_01, SHAPE_4_01, SHAPE_4_01,
+        SHAPE_4_02, SHAPE_4_02, SHAPE_4_02,
+        SHAPE_4_03, SHAPE_4_03, SHAPE_4_03,
+ 
+        // ---- 5 open cells (x2) ----
+        T_JUNCTION, T_JUNCTION,
+        WEIRDER_PATH, WEIRDER_PATH,
+        SHAPE_5_01, SHAPE_5_01,
+        SHAPE_5_02, SHAPE_5_02,
+        SHAPE_5_03, SHAPE_5_03,
+        SHAPE_5_04, SHAPE_5_04,
+        SHAPE_5_05, SHAPE_5_05,
+        SHAPE_5_06, SHAPE_5_06,
+        SHAPE_5_07, SHAPE_5_07,
+ 
+        // ---- the only 4-way tile left (x1) ----
+        CROSS
+    };
+
+    public static final Tile[][] POOLS = {
+        ALL,
+        ALL_CLOSED,
+        ALL_TIGHT
+    };
+
+    public static final int RANDOM = -1;
+    public static final int ALL_ID = 0;
+    public static final int ALL_CLOSED_ID = 1;
+    public static final int ALL_TIGHT_ID = 2;
 }

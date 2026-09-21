@@ -113,22 +113,22 @@ public final class TileGenerator {
 		return (variants.toArray(Tile[]::new));
 	}
 
-    public static Tile getRandomMinConnections(int minConnections) {
+    public static Tile getRandomMinConnections(int minConnections, byte poolId) {
         if (minConnections < 1 || minConnections > 4)
             return (Tiles.EMPTY);
-        Tile[] validTiles = Arrays.stream(Tiles.ALL).filter(tile -> Integer.bitCount(tile.getConnections()) >= minConnections).toArray(Tile[]::new);
+        Tile[] validTiles = Arrays.stream(Tiles.POOLS[poolId]).filter(tile -> Integer.bitCount(tile.getConnections()) >= minConnections).toArray(Tile[]::new);
 
         return (validTiles[TrueRandom.getrandom(validTiles.length)]);
     }
 
-    public static Tile getRandomMinLine() {
-        Tile[] validTiles = Arrays.stream(Tiles.ALL).filter(tile -> (tile.getConnections() & 5) == 5 || (tile.getConnections() & 10) == 10).toArray(Tile[]::new);
+    public static Tile getRandomMinLine(byte poolId) {
+        Tile[] validTiles = Arrays.stream(Tiles.POOLS[poolId]).filter(tile -> (tile.getConnections() & 5) == 5 || (tile.getConnections() & 10) == 10).toArray(Tile[]::new);
 
         return (validTiles[TrueRandom.getrandom(validTiles.length)]);
     }
 
-    public static Tile getRandomMinCurve() {
-        Tile[] validTiles = Arrays.stream(Tiles.ALL).filter(tile -> (Integer.bitCount(tile.getConnections()) >= 2 && tile.getConnections() != 5 && tile.getConnections() != 10)).toArray(Tile[]::new);
+    public static Tile getRandomMinCurve(byte poolId) {
+        Tile[] validTiles = Arrays.stream(Tiles.POOLS[poolId]).filter(tile -> (Integer.bitCount(tile.getConnections()) >= 2 && tile.getConnections() != 5 && tile.getConnections() != 10)).toArray(Tile[]::new);
 
         return (validTiles[TrueRandom.getrandom(validTiles.length)]);
     }
@@ -138,25 +138,26 @@ public final class TileGenerator {
      *
      * @param connections bitmap of connections (1 = TOP | 2 = RIGHT | 4 = BOTTOM | 8 = LEFT), you can also use the enums on tiles class, this bitmap normaly shouldnt include the prio.
      * @param prio same as connections, but prioritary, connection can have, prio must have.
-     * @param nconnections num of connections (1 for one connection, 2 for two etc...).
+     * @param nconnections min of connections (1 for one connection, 2 for two etc...).
      */
 
-    public static Tile getRandomSpecConnect(int connections, int prio, int nconnections) {
+    public static Tile getRandomSpecConnect(int connections, int prio, int nconnections, byte poolId) {
         Tile tile;
         Tile[] tileList;
-
+		if (poolId == Tiles.RANDOM)
+			poolId = (byte)TrueRandom.getrandom(Tiles.POOLS.length);
         if ((prio | connections) == 5 || (prio | connections) == 10)
-            tile = getRandomMinLine();
+            tile = getRandomMinLine(poolId);
         else if (nconnections >= 2)
-            tile = getRandomMinCurve();
+            tile = getRandomMinCurve(poolId);
         else
-            tile = getRandomMinConnections(nconnections);
-
+            tile = getRandomMinConnections(nconnections, poolId);
+		
         tileList = TileGenerator.allVariants(tile, true);
-        tileList = Arrays.stream(tileList).filter(ttile -> ((ttile.getConnections() & prio) == prio && (ttile.getConnections() & connections) != 0) && Integer.bitCount(ttile.getConnections()) >= nconnections).toArray(Tile[]::new);
+        tileList = Arrays.stream(tileList).filter(ttile -> ((ttile.getConnections() & prio) == prio && (connections == 0 || (ttile.getConnections() & connections) != 0)) && Integer.bitCount(ttile.getConnections()) >= nconnections).toArray(Tile[]::new);
         
         if (tileList.length == 0)
-            return getRandomMinConnections(4);
+            return (Tiles.EMPTY);
 
         return(tileList[TrueRandom.getrandom(tileList.length)]);
     }
