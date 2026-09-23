@@ -579,10 +579,115 @@ public final class Tiles {
         CROSS
     };
 
+    /** Corridor pool including dead ends (branches can terminate). */
+    public static final Tile[] HALLWAYS_DEADEND = {
+        SHORTER_DEAD_END,
+        LARGER_DEAD_END,
+        STRAIGHT,
+        SHAPE_3_04,
+        SHAPE_4_03,
+        CROSS
+    };
+
+    /** Same pool with the dead ends removed: every tile has 2+ openings. */
+    public static final Tile[] HALLWAYS_NO_DEADEND = {
+        STRAIGHT,
+        SHAPE_3_04,
+        SHAPE_4_03,
+        CROSS
+    };
+
+    public static final Tile[] HALLWAYS_THIGHT = {
+        STRAIGHT,
+        CROSS
+    };
+
+    public static final Tile[] HALLWAYS_NO_CENTER = {
+        STRAIGHT,
+        SHAPE_3_04,
+        SHAPE_4_03,
+        SHAPE_8_03
+    };
+
+    public static final Tile[] ALL_OPEN = {
+        EMPTY, EMPTY, EMPTY, EMPTY, EMPTY,
+
+        WEIRD_PATH, WEIRD_PATH, WEIRD_PATH,
+        SEMICROSS, SEMICROSS, SEMICROSS,
+        SENIDEMICROSS, SENIDEMICROSS, SENIDEMICROSS,
+        UOSEMIDEMICROSS, UOSEMIDEMICROSS, UOSEMIDEMICROSS,
+        SHAPE_6_01, SHAPE_6_01, SHAPE_6_01,
+        SHAPE_6_02, SHAPE_6_02, SHAPE_6_02,
+        SHAPE_6_03, SHAPE_6_03, SHAPE_6_03,
+        SHAPE_6_04, SHAPE_6_04, SHAPE_6_04,
+        SHAPE_6_05, SHAPE_6_05, SHAPE_6_05,
+        SHAPE_6_06, SHAPE_6_06, SHAPE_6_06,
+        SHAPE_6_07, SHAPE_6_07, SHAPE_6_07,
+        SHAPE_6_08, SHAPE_6_08, SHAPE_6_08,
+        SHAPE_7_01, SHAPE_7_01, SHAPE_7_01,
+        SHAPE_7_02, SHAPE_7_02, SHAPE_7_02,
+        SHAPE_7_03, SHAPE_7_03, SHAPE_7_03,
+        SHAPE_8_01, SHAPE_8_01, SHAPE_8_01,
+        SHAPE_8_02, SHAPE_8_02, SHAPE_8_02,
+        SHAPE_8_03, SHAPE_8_03, SHAPE_8_03,
+        STRAIGHT,
+        CORNER,
+        SQUARE,
+        T_JUNCTION,
+        DEAD_END,
+        CROSS,
+        WEIRDER_PATH,
+        SHORTER_DEAD_END,
+        LARGER_DEAD_END,
+        SHAPE_2_01,
+        SHAPE_3_01,
+        SHAPE_3_02,
+        SHAPE_3_03,
+        SHAPE_3_04,
+        SHAPE_4_01,
+        SHAPE_4_02,
+        SHAPE_4_03,
+        SHAPE_5_01,
+        SHAPE_5_02,
+        SHAPE_5_03,
+        SHAPE_5_04,
+        SHAPE_5_05,
+        SHAPE_5_06,
+        SHAPE_5_07
+    };
+
+    public static final Tile[] ALL_OPEN_FEW_EXITS = {
+        T_JUNCTION, T_JUNCTION, T_JUNCTION, T_JUNCTION, T_JUNCTION,
+        WEIRDER_PATH, WEIRDER_PATH, WEIRDER_PATH, WEIRDER_PATH, WEIRDER_PATH,
+        SHAPE_5_01, SHAPE_5_01, SHAPE_5_01, SHAPE_5_01, SHAPE_5_01,
+        SHAPE_5_04, SHAPE_5_04, SHAPE_5_04, SHAPE_5_04, SHAPE_5_04,
+        SHAPE_5_05, SHAPE_5_05, SHAPE_5_05, SHAPE_5_05, SHAPE_5_05,
+        SHAPE_5_07, SHAPE_5_07, SHAPE_5_07, SHAPE_5_07, SHAPE_5_07,
+        SHAPE_6_02, SHAPE_6_02, SHAPE_6_02, SHAPE_6_02, SHAPE_6_02,
+        SHAPE_6_05, SHAPE_6_05, SHAPE_6_05, SHAPE_6_05, SHAPE_6_05,
+        SHAPE_7_03, SHAPE_7_03, SHAPE_7_03, SHAPE_7_03, SHAPE_7_03,
+ 
+        CORNER, CORNER, CORNER,
+        SQUARE, SQUARE, SQUARE,
+        SHAPE_4_01, SHAPE_4_01, SHAPE_4_01,
+        SHAPE_4_02, SHAPE_4_02, SHAPE_4_02,
+ 
+        EMPTY, EMPTY, EMPTY, EMPTY, EMPTY,
+ 
+        STRAIGHT,
+        SHORTER_DEAD_END
+    };
+
     public static final Tile[][] POOLS = {
         ALL,
         ALL_CLOSED,
-        ALL_TIGHT
+        ALL_TIGHT,
+        HALLWAYS_DEADEND,
+        HALLWAYS_NO_DEADEND,
+        HALLWAYS_THIGHT,
+        HALLWAYS_NO_CENTER,
+        ALL_OPEN,
+        ALL_OPEN_FEW_EXITS
     };
 
     public static final int RANDOM = -1;

@@ -170,7 +170,7 @@ public final class MapGenerator {
 
         for (int i = directions.length; i > 0; i--) {
             int towhere = directions[TrueRandom.getrandom(directions.length)];
-            if (TrueRandom.getrandom(100) != 0)
+            if (TrueRandom.getrandom(1000) != 0)
             {
                 switch(towhere) {
                     case Tiles.TOP:
@@ -196,9 +196,11 @@ public final class MapGenerator {
         generator.generateMap(8);
 
         boolean[][] map = generator.map;
+        System.out.print("o");
         for (int x = 0; x < map[0].length; x++) { 
             System.out.print("-");
         }
+        System.out.print("o");
         System.out.println();
         for (int y = 0; y < map.length; y++) {
             System.out.print( "|");
@@ -208,9 +210,11 @@ public final class MapGenerator {
             System.out.print( "|");
             System.out.println();
         }
+        System.out.print("o");
         for (int x = 0; x < map[0].length; x++) { 
             System.out.print("-");
         }
+        System.out.print("o");
         System.out.println();
     }
 }

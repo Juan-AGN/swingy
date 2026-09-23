@@ -148,7 +148,7 @@ public final class TileGenerator {
 			poolId = (byte)TrueRandom.getrandom(Tiles.POOLS.length);
         if ((prio | connections) == 5 || (prio | connections) == 10)
             tile = getRandomMinLine(poolId);
-        else if (nconnections >= 2)
+        else if (nconnections == 2)
             tile = getRandomMinCurve(poolId);
         else
             tile = getRandomMinConnections(nconnections, poolId);
@@ -157,7 +157,9 @@ public final class TileGenerator {
         tileList = Arrays.stream(tileList).filter(ttile -> ((ttile.getConnections() & prio) == prio && (connections == 0 || (ttile.getConnections() & connections) != 0)) && Integer.bitCount(ttile.getConnections()) >= nconnections).toArray(Tile[]::new);
         
         if (tileList.length == 0)
+		{
             return (Tiles.EMPTY);
+		}
 
         return(tileList[TrueRandom.getrandom(tileList.length)]);
     }
