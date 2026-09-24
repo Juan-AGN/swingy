@@ -10,23 +10,34 @@ public final class MapGenerator {
     private byte [][]mainpath;
     private byte [][]avoidpath;
     private int scaledsize;
+    private int size;
     private byte pool;
 
     public boolean[][] generateMap(int level) {
-        int size = (level - 1) * 5 + 10 - (level % 2);
+        size = (level - 1) * 5 + 10 - (level % 2);
 
         if (level <= 0)
             return (new boolean[1][1]);
-        this.map = new boolean[size][size];
-        this.mapTiles = new Tile[size / 3][size / 3];
-        this.mainpath = new byte[size / 3][size / 3];
-        this.avoidpath = new byte[size / 3][size / 3];
-        this.pool = (byte)(TrueRandom.getrandom(Tiles.POOLS.length + 1) - 1);
+        if (size % 3 == 0)
+        {
+            this.map = new boolean[size][size];
+            this.mapTiles = new Tile[size / 3][size / 3];
+            this.mainpath = new byte[size / 3][size / 3];
+            this.avoidpath = new byte[size / 3][size / 3];
+            this.pool = (byte)(TrueRandom.getrandom(Tiles.POOLS.length + 1) - 1);
 
-        if (size % 3 != 0)
-            return (map);
-        else
             this.threebythree(size);
+        }
+        else
+        {
+            this.map = new boolean[size][size];
+            this.mapTiles = new Tile[(size / 3) + 2][(size / 3) + 2];
+            this.mainpath = new byte[(size / 3) + 2][(size / 3) + 2];
+            this.avoidpath = new byte[(size / 3) + 2][(size / 3) + 2];
+            this.pool = (byte)(TrueRandom.getrandom(Tiles.POOLS.length + 1) - 1);
+
+            this.threebythreetwo(size);  
+        }
 
         return(map);
     }
@@ -40,18 +51,72 @@ public final class MapGenerator {
         this.fillMaptree();
     }
 
+    private void threebythreetwo(int size) {
+        scaledsize = (size / 3) + 2;
+        int posx = ((size / 3) + (size % 3) - 1) / 2;
+        int posy = posx;
+        this.startMainthree(posy, posx);
+        this.recursiveGenthree(posy, posx, -1);
+        this.fillMaptwo();
+    }
+
     private void fillMaptree() {
         for (int posy = 0; posy < this.scaledsize; posy++)
         {
             for (int posx = 0; posx < this.scaledsize; posx++) {
                 if (mapTiles[posy][posx] != null)
+                {
                     for (int y = 0; y < 3; y++)
-                        for (int x = 0; x < 3; x++)
-                            map[y + (posy * 3)][x + (posx * 3)] = mapTiles[posy][posx].getCells()[y][x];
+                        if (map.length >= y)
+                            for (int x = 0; x < 3; x++)
+                                if (map[y].length > x)
+                                    map[y + (posy * 3)][x + (posx * 3)] = mapTiles[posy][posx].getCells()[y][x];
+                }
                 else
+                {
                     for (int y = 0; y < 3; y++)
-                        for (int x = 0; x < 3; x++)
-                            map[y + (posy * 3)][x + (posx * 3)] = false;
+                        if (map.length > y)
+                            for (int x = 0; x < 3; x++)
+                                if (map[y].length > x)
+                                        map[y + (posy * 3)][x + (posx * 3)] = false;
+                }
+            }
+        }
+    }
+
+    private void fillMaptwo() {
+        for (int posy = 0; posy < this.scaledsize; posy++)
+        {
+            for (int posx = 0; posx < this.scaledsize; posx++) {
+                if (mapTiles[posy][posx] != null)
+                {
+                    for (int y = 0; y < 3; y++)
+                    {
+                        if (map.length > y + ((posy) * 3) - (size % 3) && y + ((posy) * 3) - (size % 3) >= 0)
+                        {
+                            for (int x = 0; x < 3; x++)
+                            {
+                                if (map[y].length > x + ((posx) * 3) - (size % 3) && x + ((posx) * 3) - (size % 3) >= 0)
+                                     map[y + ((posy) * 3) - (size % 3)][x + ((posx) * 3) - (size % 3)] = mapTiles[posy][posx].getCells()[y][x];
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    for (int y = 0; y < 3; y++)
+                    {
+                        if (map.length > y + ((posy) * 3) - (size % 3) && y - (size % 3) >= 0)
+                        {
+                            for (int x = 0; x < 3; x++)
+                            {
+                                if (map[y].length > x + ((posx) * 3) - (size % 3) && x - (size % 3) >= 0)
+                                    map[y + ((posy) * 3) - (size % 3)][x + ((posx) * 3) - (size % 3)] = false;
+                            }
+                        }
+                        
+                    }
+                }
             }
         }
     }
@@ -83,6 +148,7 @@ public final class MapGenerator {
 
         if (posy < 0 || posx < 0 || posy >= scaledsize || posx >= scaledsize)
             return (0);
+
         mainpath[posy][posx] += previous;
         if (mainpath[posy][posx] == 15)
         {
@@ -139,7 +205,10 @@ public final class MapGenerator {
             }
             if (flag == true)
             {
-                mapTiles[posy][posx] = TileGenerator.getRandomSpecConnect(0, mainpath[posy][posx], Integer.bitCount(mainpath[posy][posx]), pool);
+                if ((posy < 1 || posx < 1 || posy >= scaledsize - 1 || posx >= scaledsize - 1) && size % 3 != 0)
+                    mapTiles[posy][posx] = TileGenerator.getRandomSpecConnect(0, mainpath[posy][posx], Integer.bitCount(mainpath[posy][posx]), (byte)Tiles.SPECIAL_POOL_ID);
+                else
+                    mapTiles[posy][posx] = TileGenerator.getRandomSpecConnect(0, mainpath[posy][posx], Integer.bitCount(mainpath[posy][posx]), pool);
                 return (0);
             }
             directions = Arrays.stream(directions).filter(direction -> (mainpath[posy][posx] & direction) == 0 && (avoidpath[posy][posx] & direction) == 0 && direction != towhere).toArray();
@@ -151,7 +220,7 @@ public final class MapGenerator {
     private void recursiveGenthree(int posy, int posx, int previous) {
         int []directions = {Tiles.TOP, Tiles.RIGHT, Tiles.BOTTOM, Tiles.LEFT};
 
-        if (posy < 0 || posx < 0 || posy >= this.scaledsize || posx >= this.scaledsize)
+        if (posy < 0 || posx < 0 || posy >= this.scaledsize - 1 || posx >= this.scaledsize - 1)
             return ;
 
         if (this.mainpath[posy][posx] == 0)
@@ -159,6 +228,12 @@ public final class MapGenerator {
             if (mapTiles[posy][posx] != null)
                 return ;
 
+            if ((posy < 1 || posx < 1 || posy >= scaledsize || posx >= scaledsize) && size % 3 == 1)
+            {
+                this.mapTiles[posy][posx] = TileGenerator.getRandomSpecConnect(0, previous, 1, (byte)Tiles.SPECIAL_POOL_ID);
+                return ;
+            }
+    
             this.mapTiles[posy][posx] = TileGenerator.getRandomSpecConnect(0, previous, 1, this.pool);
         }
 
@@ -193,7 +268,7 @@ public final class MapGenerator {
     public static void main(String[] args) {
         MapGenerator generator = new MapGenerator();
 
-        generator.generateMap(8);
+        generator.generateMap(15);
 
         boolean[][] map = generator.map;
         System.out.print("o");
