@@ -16,4 +16,21 @@ public class Map {
         this.pool = ppool;
         this.center = pcenter;
     }
+
+    public boolean isInside(Coordinates toCheck) {
+        if (new Coordinates(1, 1).isFullyLower(toCheck) || this.mapsize.isFullyHigher(toCheck))
+            return (true);
+        else
+            return (false);
+    }
+
+    public boolean hasWall(Coordinates toCheck) {
+        if (!isInside(toCheck))
+            return (false);
+        else if ((int)(mapsize.gety() - toCheck.gety() - 1) < 0|| (int)(mapsize.getx() - toCheck.getx() - 1) < 0)
+            return (false);
+        else if (map[(int)(mapsize.gety() - toCheck.gety() - 1)][(int)(mapsize.getx() - toCheck.getx() - 1)])
+            return (false);
+        return (true);
+    }
 }

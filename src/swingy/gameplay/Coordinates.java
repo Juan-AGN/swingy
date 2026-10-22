@@ -16,6 +16,28 @@ public class Coordinates {
         return  (false);
     }
 
+    public boolean isFullyHigher(Coordinates toComp) {
+        if (this.x < toComp.x)
+            if (this.y < toComp.y)
+                return (true);
+        return  (false);
+    }
+
+    public boolean isFullyLower(Coordinates toComp) {
+        if (this.x > toComp.x)
+            if (this.y > toComp.y)
+                return (true);
+        return  (false);
+    }
+
+    public long getx() {
+        return (this.x);
+    }
+
+    public long gety() {
+        return (this.y);
+    }
+
     protected void set(Coordinates toSet) {
         this.x = toSet.x;
         this.y = toSet.y;

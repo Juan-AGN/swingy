@@ -11,4 +11,12 @@ public class GameData {
         map = pmap;
         player = pplayer;
     }
+
+    public boolean isInside(Coordinates toCheck) {
+        return (map.isInside(toCheck));
+    }
+
+    public boolean hasWall(Coordinates toCheck) {
+        return (map.hasWall(toCheck));
+    }
 }
