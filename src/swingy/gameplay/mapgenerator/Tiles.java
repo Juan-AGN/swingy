@@ -688,6 +688,40 @@ public final class Tiles {
         SHORTER_DEAD_END
     };
 
+    public static final Tile[] ALL_TIGHT_EMPTY = {
+ 
+        // ---- <= 4 open cells (x3) ----
+        STRAIGHT, STRAIGHT, STRAIGHT,
+        CORNER, CORNER, CORNER,
+        SQUARE, SQUARE, SQUARE,
+        DEAD_END, DEAD_END, DEAD_END,
+        SHORTER_DEAD_END, SHORTER_DEAD_END, SHORTER_DEAD_END,
+        LARGER_DEAD_END, LARGER_DEAD_END, LARGER_DEAD_END,
+        SHAPE_2_01, SHAPE_2_01, SHAPE_2_01,
+        SHAPE_3_01, SHAPE_3_01, SHAPE_3_01,
+        SHAPE_3_02, SHAPE_3_02, SHAPE_3_02,
+        SHAPE_3_03, SHAPE_3_03, SHAPE_3_03,
+        SHAPE_3_04, SHAPE_3_04, SHAPE_3_04,
+        SHAPE_4_01, SHAPE_4_01, SHAPE_4_01,
+        SHAPE_4_02, SHAPE_4_02, SHAPE_4_02,
+        SHAPE_4_03, SHAPE_4_03, SHAPE_4_03,
+ 
+        // ---- 5 open cells (x2) ----
+        T_JUNCTION, T_JUNCTION,
+        WEIRDER_PATH, WEIRDER_PATH,
+        SHAPE_5_01, SHAPE_5_01,
+        SHAPE_5_02, SHAPE_5_02,
+        SHAPE_5_03, SHAPE_5_03,
+        SHAPE_5_04, SHAPE_5_04,
+        SHAPE_5_05, SHAPE_5_05,
+        SHAPE_5_06, SHAPE_5_06,
+        SHAPE_5_07, SHAPE_5_07,
+ 
+        // ---- the only 4-way tile left (x1) ----
+        EMPTY
+    };
+
+
     public static final Tile[] SPECIAL_POOL= {
         STRAIGHT
     };
@@ -702,8 +736,25 @@ public final class Tiles {
         HALLWAYS_THIGHT,
         HALLWAYS_NO_CENTER,
         ALL_OPEN,
-        ALL_OPEN_FEW_EXITS
+        ALL_OPEN_FEW_EXITS,
+        ALL_TIGHT_EMPTY
     };
+
+    public static final String []POOLS_NAME = {
+        "RANDOM",
+        "ALL",
+        "ALL_CLOSED",
+        "ALL_TIGHT",
+        "HALLWAYS_DEADEND",
+        "HALLWAYS_NO_DEADEND",
+        "HALLWAYS_DEADEND_WEMPTY",
+        "HALLWAYS_THIGHT",
+        "HALLWAYS_NO_CENTER",
+        "ALL_OPEN",
+        "ALL_OPEN_FEW_EXITS",
+        "ALL_TIGHT_EMPTY_ID"
+    };
+
 
     public static final int SPECIAL_POOL_ID = -2;
     public static final int RANDOM = -1;
@@ -717,4 +768,5 @@ public final class Tiles {
     public static final int HALLWAYS_NO_CENTER_ID = 7;
     public static final int ALL_OPEN_ID = 8;
     public static final int ALL_OPEN_FEW_EXITS_ID = 9;
+    public static final int ALL_TIGHT_EMPTY_ID = 10;
 }

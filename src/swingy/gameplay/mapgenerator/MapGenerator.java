@@ -2,6 +2,7 @@ package swingy.gameplay.mapgenerator;
 
 import java.util.Arrays;
 
+import swingy.gameplay.Coordinates;
 import swingy.utils.TrueRandom;
 
 public final class MapGenerator {
@@ -13,33 +14,39 @@ public final class MapGenerator {
     private int size;
     private byte pool;
 
-    public boolean[][] generateMap(int level) {
-        size = (level - 1) * 5 + 10 - (level % 2);
+    // This method may never be used, but just in case I need it
+    public String getCurrentPoolName() {
+        return (Tiles.POOLS_NAME[this.pool + 1]);
+    }
 
-        if (level <= 0)
-            return (new boolean[1][1]);
+    public Map generateMap(int level) {
+        if (level < 0)
+            level = 1;
+
+        size = (level - 1) * 5 + 10 - (level % 2);
+        this.map = new boolean[size][size];
+        this.pool = (byte)(TrueRandom.getrandom(Tiles.POOLS.length + 1) - 1);
+
         if (size % 3 == 0)
         {
-            this.map = new boolean[size][size];
             this.mapTiles = new Tile[size / 3][size / 3];
             this.mainpath = new byte[size / 3][size / 3];
             this.avoidpath = new byte[size / 3][size / 3];
-            this.pool = (byte)(TrueRandom.getrandom(Tiles.POOLS.length + 1) - 1);
 
             this.threebythree(size);
         }
         else
         {
-            this.map = new boolean[size][size];
             this.mapTiles = new Tile[(size / 3) + 2][(size / 3) + 2];
             this.mainpath = new byte[(size / 3) + 2][(size / 3) + 2];
             this.avoidpath = new byte[(size / 3) + 2][(size / 3) + 2];
-            this.pool = (byte)(TrueRandom.getrandom(Tiles.POOLS.length + 1) - 1);
 
             this.threebythreetwo(size);  
         }
 
-        return(map);
+        // I may need to change this later if the player is not centered, so, yeah, thats it, this comment is a reminder that may never be used in the entire lifespan of this program, yeah, cool. :)
+        Map toRet = new Map(this.map, (byte)(this.pool + 1), new Coordinates((((size / 3) + (size % 3) - 1) / 2) + 1, (((size / 3) + (size % 3) - 1) / 2) + 1));
+        return (toRet);
     }
 
     private void threebythree(int size) {
@@ -158,7 +165,7 @@ public final class MapGenerator {
             
         directions = Arrays.stream(directions).filter(direction -> (mainpath[posy][posx] & direction) == 0 && (avoidpath[posy][posx] & direction) == 0).toArray();
 
-        for (int i = directions.length; i > 0; i--) {
+        for (int i = directions.length - 1; i > 0; i--) {
             int towhere = directions[TrueRandom.getrandom(directions.length)];
 
             switch(towhere) {
@@ -220,7 +227,7 @@ public final class MapGenerator {
     private void recursiveGenthree(int posy, int posx, int previous) {
         int []directions = {Tiles.TOP, Tiles.RIGHT, Tiles.BOTTOM, Tiles.LEFT};
 
-        if (posy < 0 || posx < 0 || posy >= this.scaledsize - 1 || posx >= this.scaledsize - 1)
+        if (posy < 0 || posx < 0 || posy >= this.scaledsize || posx >= this.scaledsize)
             return ;
 
         if (this.mainpath[posy][posx] == 0)
@@ -228,7 +235,7 @@ public final class MapGenerator {
             if (mapTiles[posy][posx] != null)
                 return ;
 
-            if ((posy < 1 || posx < 1 || posy >= scaledsize || posx >= scaledsize) && size % 3 == 1)
+            if ((posy < 1 || posx < 1 || posy >= scaledsize - 1 || posx >= scaledsize - 1) && size % 3 != 0)
             {
                 this.mapTiles[posy][posx] = TileGenerator.getRandomSpecConnect(0, previous, 1, (byte)Tiles.SPECIAL_POOL_ID);
                 return ;
@@ -266,30 +273,53 @@ public final class MapGenerator {
         }
     }
     public static void main(String[] args) {
-        MapGenerator generator = new MapGenerator();
-
-        generator.generateMap(15);
-
-        boolean[][] map = generator.map;
-        System.out.print("o");
-        for (int x = 0; x < map[0].length; x++) { 
-            System.out.print("-");
-        }
-        System.out.print("o");
-        System.out.println();
-        for (int y = 0; y < map.length; y++) {
-            System.out.print( "|");
-            for (int x = 0; x < map[y].length; x++) {
-                System.out.print(map[y][x] ? "░" : "█");
+        /*long start;
+        long end;
+        long elapsedMs;
+        while (true)
+        {
+            start = System.nanoTime();
+            for (int i = 1; i < 101; i++)
+            {
+                MapGenerator generator = new MapGenerator();
+                generator.generateMap(i);
             }
-            System.out.print( "|");
+            end = System.nanoTime();
+            elapsedMs = (end - start) / 1_000_000;
+            System.out.println("100 levels done in " + elapsedMs + "ms");
+        }*/
+        
+        for (int i = 1; i < 101; i++) {
+            System.out.println("LEVEL: ");
+            System.out.println(i);
+            MapGenerator generator = new MapGenerator();
+    
+            generator.generateMap(i);
+            System.out.println("POOL: ");
+            System.out.println(generator.getCurrentPoolName());
+
+            boolean[][] map = generator.map;
+            System.out.print("o");
+            for (int x = 0; x < map[0].length; x++) { 
+                System.out.print("-");
+            }
+            System.out.print("o");
+            System.out.println();
+            for (int y = 0; y < map.length; y++) {
+                System.out.print( "|");
+                for (int x = 0; x < map[y].length; x++) {
+                    System.out.print(map[y][x] ? "░" : "█");
+                }
+                System.out.print( "|");
+                System.out.println();
+            }
+            System.out.print("o");
+            for (int x = 0; x < map[0].length; x++) { 
+                System.out.print("-");
+            }
+            System.out.print("o");
             System.out.println();
         }
-        System.out.print("o");
-        for (int x = 0; x < map[0].length; x++) { 
-            System.out.print("-");
-        }
-        System.out.print("o");
-        System.out.println();
+        
     }
 }

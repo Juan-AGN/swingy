@@ -118,18 +118,24 @@ public final class TileGenerator {
             return (Tiles.EMPTY);
         Tile[] validTiles = Arrays.stream(Tiles.POOLS[poolId]).filter(tile -> Integer.bitCount(tile.getConnections()) >= minConnections).toArray(Tile[]::new);
 
+		if (validTiles.length == 0)
+			return (Tiles.EMPTY);
         return (validTiles[TrueRandom.getrandom(validTiles.length)]);
     }
 
     public static Tile getRandomMinLine(byte poolId) {
         Tile[] validTiles = Arrays.stream(Tiles.POOLS[poolId]).filter(tile -> (tile.getConnections() & 5) == 5 || (tile.getConnections() & 10) == 10).toArray(Tile[]::new);
 
+		if (validTiles.length == 0)
+			return (Tiles.EMPTY);
         return (validTiles[TrueRandom.getrandom(validTiles.length)]);
     }
 
     public static Tile getRandomMinCurve(byte poolId) {
         Tile[] validTiles = Arrays.stream(Tiles.POOLS[poolId]).filter(tile -> (Integer.bitCount(tile.getConnections()) >= 2 && tile.getConnections() != 5 && tile.getConnections() != 10)).toArray(Tile[]::new);
 
+		if (validTiles.length == 0)
+			return (Tiles.EMPTY);
         return (validTiles[TrueRandom.getrandom(validTiles.length)]);
     }
 
@@ -139,6 +145,8 @@ public final class TileGenerator {
      * @param connections bitmap of connections (1 = TOP | 2 = RIGHT | 4 = BOTTOM | 8 = LEFT), you can also use the enums on tiles class, this bitmap normaly shouldnt include the prio.
      * @param prio same as connections, but prioritary, connection can have, prio must have.
      * @param nconnections min of connections (1 for one connection, 2 for two etc...).
+	 * 
+	 * This may be the only method with an param description, but I made this while i was really tired and I may need a reminder of the modes and the bitmask
      */
 
     public static Tile getRandomSpecConnect(int connections, int prio, int nconnections, byte poolId) {
