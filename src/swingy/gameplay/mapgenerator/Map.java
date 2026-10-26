@@ -18,19 +18,22 @@ public class Map {
     }
 
     public boolean isInside(Coordinates toCheck) {
-        if (new Coordinates(1, 1).isFullyLower(toCheck) || this.mapsize.isFullyHigher(toCheck))
-            return (true);
-        else
-            return (false);
+        return (toCheck.getx() >= 0 && toCheck.gety() >= 0 && toCheck.getx() < mapsize.getx() && toCheck.gety() < mapsize.gety());
     }
 
     public boolean hasWall(Coordinates toCheck) {
         if (!isInside(toCheck))
             return (false);
-        else if ((int)(mapsize.gety() - toCheck.gety() - 1) < 0|| (int)(mapsize.getx() - toCheck.getx() - 1) < 0)
-            return (false);
-        else if (map[(int)(mapsize.gety() - toCheck.gety() - 1)][(int)(mapsize.getx() - toCheck.getx() - 1)])
+        else if (map[(int)(toCheck.gety())][(int)toCheck.getx()])
             return (false);
         return (true);
+    }
+
+    public final boolean[][] getMap() {
+        return (map);
+    }
+
+    public final Coordinates getCenter() {
+        return (center);
     }
 }

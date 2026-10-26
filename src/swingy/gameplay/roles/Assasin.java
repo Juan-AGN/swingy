@@ -10,12 +10,13 @@ public class Assasin extends Role {
     final private double lad = 25;
     final private double larm = 10;
 
-    Assasin() {
+    public Assasin() {
         this.basestats = new Stats(chp, cad, carm);
     }
 
-    Assasin(long level) {
-        this.basestats = new Stats(chp + (lhp * level), cad + (lad * level), carm + (larm * level));
+    public Assasin(long plevel) {
+        this.basestats = new Stats(chp + (lhp * plevel), cad + (lad * plevel), carm + (larm * plevel));
+        this.level = plevel;
     }
 
     @Override

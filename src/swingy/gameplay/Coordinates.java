@@ -16,6 +16,18 @@ public class Coordinates {
         return  (false);
     }
 
+    public boolean isHigher(Coordinates toComp) {
+        if (this.x < toComp.x || this.y < toComp.y)
+            return (true);
+        return  (false);
+    }
+
+    public boolean isLower(Coordinates toComp) {
+        if (this.x > toComp.x || this.y > toComp.y)
+            return (true);
+        return  (false);
+    }
+
     public boolean isFullyHigher(Coordinates toComp) {
         if (this.x < toComp.x)
             if (this.y < toComp.y)

@@ -45,7 +45,7 @@ public final class MapGenerator {
         }
 
         // I may need to change this later if the player is not centered, so, yeah, thats it, this comment is a reminder that may never be used in the entire lifespan of this program, yeah, cool. :)
-        Map toRet = new Map(this.map, (byte)(this.pool + 1), new Coordinates((((size / 3) + (size % 3) - 1) / 2) + 1, (((size / 3) + (size % 3) - 1) / 2) + 1));
+        Map toRet = new Map(this.map, (byte)(this.pool), new Coordinates((((size) + (size % 3) - 1) / 2) + 1, (((size) + (size % 3) - 1) / 2)));
         return (toRet);
     }
 
@@ -320,6 +320,5 @@ public final class MapGenerator {
             System.out.print("o");
             System.out.println();
         }
-        
     }
 }

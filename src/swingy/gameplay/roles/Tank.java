@@ -10,12 +10,13 @@ public class Tank extends Role {
     final private double lad = 10;
     final private double larm = 30;
 
-    Tank() {
+    public Tank() {
         this.basestats = new Stats(chp, cad, carm);
     }
 
-    Tank(long level) {
-        this.basestats = new Stats(chp + (lhp * level), cad + (lad * level), carm + (larm * level));
+    public Tank(long plevel) {
+        this.basestats = new Stats(chp + (lhp * plevel), cad + (lad * plevel), carm + (larm * plevel));
+        this.level = plevel;
     }
 
     @Override

@@ -10,12 +10,13 @@ public class Warrior extends Role {
     final private double lad = 20;
     final private double larm = 20;
 
-    Warrior() {
+    public Warrior() {
         this.basestats = new Stats(chp, cad, carm);
     }
 
-    Warrior(long level) {
-        this.basestats = new Stats(chp + (lhp * (level - 1)), cad + (lad * (level - 1)), carm + (larm * (level - 1)));
+    public Warrior(long plevel) {
+        this.basestats = new Stats(chp + (lhp * (plevel - 1)), cad + (lad * (plevel - 1)), carm + (larm * (plevel - 1)));
+        this.level = plevel;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package swingy.gameplay;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 public class Unit {
     protected Role unitrole;
@@ -16,6 +17,13 @@ public class Unit {
     private Item armor;
     private Item weapon;
     private byte type;
+
+    public Unit(long pid, String pname, Role punitrole) {
+        id = pid;
+        name = pname;
+        unitrole = punitrole;
+        currenthp = unitrole.getStats().getHp();
+    }
 
     protected double getHit(double oatk) {
         double dmg = oatk - unitrole.getStats().getArmor();
@@ -34,6 +42,14 @@ public class Unit {
 
     public Stats getStats() {
         return (this.getStats());
+    }
+
+    public long getLevel() {
+        return (this.unitrole.level);
+    }
+
+    public void levelUp() {
+        this.unitrole.levelUp();
     }
 
     public String getName() {
