@@ -11,6 +11,7 @@ public class Warrior extends Role {
     final private double larm = 20;
 
     public Warrior() {
+        super();
         this.basestats = new Stats(chp, cad, carm);
     }
 
@@ -25,5 +26,10 @@ public class Warrior extends Role {
         this.setNewlevel();
 
         return (basestats);
+    }
+
+    @Override
+    public Role getRole() {
+        return (new Warrior(this.level));
     }
 }

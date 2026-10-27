@@ -21,4 +21,6 @@ public abstract class Role{
         exp = exp - tolevel;
         tolevel = (level * 1000) + (((level - 1) * (level - 1)) * 450);
     }
+
+    public abstract Role getRole();
 }

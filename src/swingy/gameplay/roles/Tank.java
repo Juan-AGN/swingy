@@ -26,4 +26,9 @@ public class Tank extends Role {
 
         return (basestats);
     }
+
+    @Override
+    public Role getRole() {
+        return (new Tank(this.level));
+    }
 }

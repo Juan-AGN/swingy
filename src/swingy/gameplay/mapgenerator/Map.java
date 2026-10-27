@@ -11,10 +11,22 @@ public class Map {
 
     // mapsize isn't a param just in case i forget that i want to make it so the coordenates are from 0 to mapsize.
     public Map(boolean[][] pmap, byte ppool, Coordinates pcenter) {
-        this.map = pmap;
+        this.map = new boolean[pmap.length][pmap[0].length];
+    
+        for (int y = 0; y < pmap.length; y ++)
+            for (int x = 0; x < pmap[y].length; x ++)
+                    this.map[y][x] = pmap[y][x];
+
         this.mapsize = new Coordinates(pmap[0].length, pmap.length);
         this.pool = ppool;
         this.center = pcenter;
+    }
+
+    public Map(Map toCopy) {
+        this.map = toCopy.getMap();
+        this.mapsize = new Coordinates(toCopy.mapsize);
+        this.pool = toCopy.pool;
+        this.center = toCopy.center;
     }
 
     public boolean isInside(Coordinates toCheck) {
@@ -29,11 +41,16 @@ public class Map {
         return (true);
     }
 
-    public final boolean[][] getMap() {
-        return (map);
+    public boolean[][] getMap() {
+        boolean [][]toret = new boolean[map.length][map[0].length];
+    
+        for (int y = 0; y < map.length; y ++)
+            for (int x = 0; x < map[y].length; x ++)
+                    toret[y][x] = map[y][x];
+        return (toret);
     }
 
     public final Coordinates getCenter() {
-        return (center);
+        return (new Coordinates(center));
     }
 }

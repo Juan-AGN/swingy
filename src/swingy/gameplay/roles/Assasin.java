@@ -26,4 +26,9 @@ public class Assasin extends Role {
 
         return (basestats);
     }
+
+    @Override
+    public Role getRole() {
+        return (new Assasin(this.level));
+    }
 }

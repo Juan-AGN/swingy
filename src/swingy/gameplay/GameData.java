@@ -8,8 +8,8 @@ public class GameData {
     protected Unit          player;
 
     public GameData(Map pmap, Unit pplayer) {
-        map = pmap;
-        player = pplayer;
+        map = new Map(pmap);
+        player = new Unit(pplayer);
     }
 
     public boolean isInside(Coordinates toCheck) {
@@ -18,5 +18,13 @@ public class GameData {
 
     public boolean hasWall(Coordinates toCheck) {
         return (map.hasWall(toCheck));
+    }
+
+    public final Unit getPlayer() {
+        return (new Unit(player));
+    }
+
+    public final Map getMap() {
+        return (new Map(map));
     }
 }

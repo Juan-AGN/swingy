@@ -21,8 +21,25 @@ public class Unit {
     public Unit(long pid, String pname, Role punitrole) {
         id = pid;
         name = pname;
+        where = new Coordinates(0, 0);
         unitrole = punitrole;
         currenthp = unitrole.getStats().getHp();
+    }
+
+    public Unit(long pid, String pname, Role punitrole, Coordinates pwhere) {
+        id = pid;
+        name = pname;
+        where = new Coordinates(pwhere);
+        unitrole = punitrole;
+        currenthp = unitrole.getStats().getHp();
+    }
+
+    public Unit(Unit toCopy) {
+        unitrole = toCopy.unitrole.getRole();
+        where = new Coordinates(toCopy.getX(), toCopy.getY());
+        currenthp = toCopy.currenthp;
+        name = toCopy.name;
+        id = toCopy.id;
     }
 
     protected double getHit(double oatk) {
@@ -31,6 +48,14 @@ public class Unit {
         this.currenthp -= (dmg > 0) ? dmg : 1;
         return (currenthp);
     };
+
+    public long getX() {
+        return (where.x);
+    }
+
+    public long getY() {
+        return (where.y);
+    }
 
     public Double getCurenthp() {
         return (this.currenthp);
@@ -54,5 +79,13 @@ public class Unit {
 
     public String getName() {
         return (name);
+    }
+
+    public Unit getUnit() {
+        return (new Unit(this));
+    }
+
+    public Coordinates getCoords() {
+        return (new Coordinates(this.where));
     }
 }

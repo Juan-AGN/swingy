@@ -9,6 +9,7 @@ import swingy.gameplay.roles.Tank;
 import swingy.utils.NameGenerator;
 import swingy.utils.Sleep;
 import swingy.utils.TakeInput;
+import swingy.view.TermPrinter;
 
 public class Gameplay {
     GameData gameState;
@@ -33,91 +34,24 @@ public class Gameplay {
             tomove.where = new Coordinates(tomove.where.x + 1, tomove.where.y);
     }
 
-    public void tempShowState() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-        int fovx = 9;
-        int fovy = 9;
-        int spritesize = 16;
-        String print[] = new String[(fovy * spritesize) + 2];
-        for (int i = 0; i < print.length; i ++)
-            print[i] = "";
 
-        int basey = (int)gameState.player.where.y - (fovy / 2);
-        int y = 0;
-        int basex = (int)gameState.player.where.x - (fovx / 2);
-        print[0] += "┌";
-        for (int x = 0; x < (fovx * spritesize) * 2; x++) { 
-            print[0] += "─";
-        }
-        print[0] += "┐";
-        for (; y < fovy; y++) {
-            for (int countery = 0; countery < spritesize; countery ++)
-                print[(y * spritesize) + countery + 1] +=  "│";
-
-            for (int x = 0; x < fovx; x++) {
-                if (!gameState.player.where.compare(new Coordinates(x + basex, y + basey)))
-                {
-                    for (int countery = 0; countery < spritesize; countery ++)
-                    {
-                        for (int counterx = 0; counterx < spritesize; counterx ++)
-                        {
-                            if (gameState.map.isInside(new Coordinates(x + basex, y + basey)))
-                                print[(y * spritesize) + 1 + countery] += (gameState.map.hasWall(new Coordinates(x + basex, y + basey)) ? "██" : "░░");
-                            else
-                                print[(y * spritesize) + 1 + countery] += "  ";
-                        }
-                    }
-                }
-                else
-                {
-                    for (int countery = 0; countery < spritesize; countery ++)
-                    {
-                        for (int counterx = 0; counterx < spritesize; counterx ++)
-                        {
-                            if (counterx == 1 && countery == 0)
-                                print[(y * spritesize) + 1 + countery] += "  ";
-                            else if (counterx == 0 && countery == 1)
-                                print[(y * spritesize) + 1 + countery] += "  ";
-                            else if (counterx == 1 && countery == 1)
-                                print[(y * spritesize) + 1 + countery] += "  ";
-                            else if (counterx == 2 && countery == 1)
-                                print[(y * spritesize) + 1 + countery] += "  ";
-                            else if (counterx == 1 && countery == 2)
-                                print[(y * spritesize) + 1 + countery] += "  ";
-                            else
-                                print[(y * spritesize) + 1 + countery] += "  ";
-                        }
-                    }
-                }
-            }
-            for (int countery = 0; countery < spritesize; countery ++)
-                print[(y * spritesize) + countery + 1] +=  "│";
-        }
-        print[(y * spritesize) + 1] += "└";
-        for (int x = 0; x < (fovx * spritesize) * 2; x++) { 
-            print[(y * spritesize) + 1] += "─";
-        }
-        print[(y * spritesize) + 1] += "┘";
-
-        for (int i = 0; i < print.length; i ++)
-            System.out.println(print[i]);
-        System.out.println("-The grand adventure of <<" + gameState.player.getName() + ">>, may he live forever and get to the end of the adventure by defeating his nemesis, <<" + NameGenerator.generateName() + ">>-");
-    }
 
     public void setup(Unit player) {
         MapGenerator generator = new MapGenerator();
         this.gameState = new GameData(generator.generateMap((int)player.unitrole.level), player);
-        player.where = new Coordinates(gameState.map.getCenter().getx() - 1, gameState.map.getCenter().gety());
+        this.gameState.player.where = new Coordinates(gameState.map.getCenter().getx() - 1, gameState.map.getCenter().gety());
     }
 
     public void loop() {
         int key = 0;
         int setcooldown = 50;
         int cooldown = 0;
-        int ms = 33;
+        int setenemycooldown = 1500;
+        int enemycooldown = 0;
+        int ms = 122;
+        TermPrinter printer = new TermPrinter();
 
-        tempShowState();
+        printer.termShowState(gameState);
         while (gameState.isInside(gameState.player.where))
         {
             Sleep.wait(ms);
@@ -146,7 +80,7 @@ public class Gameplay {
                     break;
             }
             key = 0;
-            tempShowState();
+            printer.termShowState(gameState);
         }
     } 
 

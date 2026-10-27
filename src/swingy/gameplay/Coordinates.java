@@ -9,6 +9,11 @@ public class Coordinates {
         this.y = y;
     }
 
+    public Coordinates(Coordinates toCopy) {
+        this.x = toCopy.x;
+        this.y = toCopy.y;
+    }
+
     public boolean compare(Coordinates toComp) {
         if (this.x == toComp.x)
             if (this.y == toComp.y)
