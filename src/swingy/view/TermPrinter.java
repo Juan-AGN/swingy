@@ -47,6 +47,7 @@ public class TermPrinter {
 
     private void printTabs() {
         String print[] = new String[(fovy * spritesize) + 2];
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < print.length; i ++)
             print[i] = "";
         print[0] += "┌";
@@ -70,10 +71,12 @@ public class TermPrinter {
             }
         }
 
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        sb.append("\033[H");
         for (int i = 0; i < print.length; i ++)
-            System.out.println(print[i]);
+            sb.append(print[i]).append("\n");
+
+        System.out.println(sb.toString());
+        System.out.flush();
     }
 
     public void termShowState(GameData gameState) {
