@@ -2,7 +2,7 @@ package swingy.gameplay.mapgenerator;
 
 import swingy.gameplay.Coordinates;
 
-public class Map {
+public class GMap {
     // May need to make getter eventually, I wanted to make these with const getters, but apparently java doesnt have those :(
     protected boolean[][]   map;
     protected Coordinates   mapsize;
@@ -10,7 +10,7 @@ public class Map {
     byte                    pool;
 
     // mapsize isn't a param just in case i forget that i want to make it so the coordenates are from 0 to mapsize.
-    public Map(boolean[][] pmap, byte ppool, Coordinates pcenter) {
+    public GMap(boolean[][] pmap, byte ppool, Coordinates pcenter) {
         this.map = new boolean[pmap.length][pmap[0].length];
     
         for (int y = 0; y < pmap.length; y ++)
@@ -22,7 +22,7 @@ public class Map {
         this.center = pcenter;
     }
 
-    public Map(Map toCopy) {
+    public GMap(GMap toCopy) {
         this.map = toCopy.getMap();
         this.mapsize = new Coordinates(toCopy.mapsize);
         this.pool = toCopy.pool;

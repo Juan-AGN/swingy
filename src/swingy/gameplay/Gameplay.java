@@ -48,8 +48,8 @@ public class Gameplay {
         int cooldown = 0;
         int setenemycooldown = 1500;
         int enemycooldown = 0;
-        int ms = 122;
-        TermPrinter printer = new TermPrinter();
+        int ms = 100;
+        TermPrinter printer = new TermPrinter(gameState);
 
         printer.termShowState(gameState);
         while (gameState.isInside(gameState.player.where))
@@ -75,7 +75,12 @@ public class Gameplay {
                     break;
                 case 'd':
                     moveright(gameState.player);
-                    break;        
+                    break;
+                case ' ':
+                    printer.miniMapSize();
+                    break;  
+                case 'n':
+                    return ;     
                 default:
                     break;
             }

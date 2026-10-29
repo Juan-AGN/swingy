@@ -1,14 +1,14 @@
 package swingy.gameplay;
 import java.util.Vector;
-import swingy.gameplay.mapgenerator.Map;;
+import swingy.gameplay.mapgenerator.GMap;;
 
 public class GameData {
-    protected Map           map;
+    protected GMap           map;
     protected Vector<Unit>  units;
     protected Unit          player;
 
-    public GameData(Map pmap, Unit pplayer) {
-        map = new Map(pmap);
+    public GameData(GMap pmap, Unit pplayer) {
+        map = new GMap(pmap);
         player = new Unit(pplayer);
     }
 
@@ -24,7 +24,7 @@ public class GameData {
         return (new Unit(player));
     }
 
-    public final Map getMap() {
-        return (new Map(map));
+    public final GMap getMap() {
+        return (new GMap(map));
     }
 }

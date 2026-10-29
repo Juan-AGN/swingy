@@ -19,7 +19,7 @@ public final class MapGenerator {
         return (Tiles.POOLS_NAME[this.pool + 1]);
     }
 
-    public Map generateMap(int level) {
+    public GMap generateMap(int level) {
         if (level < 0)
             level = 1;
 
@@ -45,7 +45,7 @@ public final class MapGenerator {
         }
 
         // I may need to change this later if the player is not centered, so, yeah, thats it, this comment is a reminder that may never be used in the entire lifespan of this program, yeah, cool. :)
-        Map toRet = new Map(this.map, (byte)(this.pool), new Coordinates((((size) + (size % 3) - 1) / 2) + 1, (((size) + (size % 3) - 1) / 2)));
+        GMap toRet = new GMap(this.map, (byte)(this.pool), new Coordinates((((size) + (size % 3) - 1) / 2) + 1, (((size) + (size % 3) - 1) / 2)));
         return (toRet);
     }
 

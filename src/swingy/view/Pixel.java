@@ -1,8 +1,12 @@
 package swingy.view;
 
 public class Pixel {
-    String tpixel = "  ";
+    String tpixel = "██";
     boolean transparency;
+
+    Pixel() {
+        transparency = false;
+    }
 
     Pixel(int r, int g, int b) {
         transparency = true;
