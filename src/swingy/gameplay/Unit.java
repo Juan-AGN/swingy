@@ -13,14 +13,14 @@ public class Unit {
     // My tame is Pteo Uoz, son of Ian Oxisa and distant relative of Eih Ajzeveñiat. (examples of random names, the name is generated totally randomly, sadly, i cant censor bad names without adding them to the code, so i'll just pray no bad names show up)
     protected  String name = "";
 
-    private Long id;
+    private byte id;
     private ArrayList<Item> inventory = new ArrayList<Item>();
     private Item helm;
     private Item armor;
     private Item weapon;
     private Behavior type;
 
-    public Unit(long pid, String pname, Role punitrole, Behavior ptype) {
+    public Unit(byte pid, String pname, Role punitrole, Behavior ptype) {
         id = pid;
         name = pname;
         where = new Coordinates(0, 0);
@@ -29,7 +29,7 @@ public class Unit {
         type = ptype;
     }
 
-    public Unit(long pid, String pname, Role punitrole, Coordinates pwhere, Behavior ptype) {
+    public Unit(byte pid, String pname, Role punitrole, Coordinates pwhere, Behavior ptype) {
         id = pid;
         name = pname;
         where = new Coordinates(pwhere);
@@ -38,7 +38,7 @@ public class Unit {
         type = ptype;
     }
 
-    public Unit(long pid, String pname, Role punitrole, double cd, boolean active, Behavior ptype) {
+    public Unit(byte pid, String pname, Role punitrole, double cd, boolean active, Behavior ptype) {
         id = pid;
         name = pname;
         where = new Coordinates(0, 0);
@@ -49,7 +49,7 @@ public class Unit {
         type = ptype;
     }
 
-    public Unit(long pid, String pname, Role punitrole, Coordinates pwhere, double cd, boolean active, Behavior ptype) {
+    public Unit(byte pid, String pname, Role punitrole, Coordinates pwhere, double cd, boolean active, Behavior ptype) {
         id = pid;
         name = pname;
         where = new Coordinates(pwhere);
@@ -125,9 +125,9 @@ public class Unit {
             return (-1);
 
         if (map == null)
-            direction = this.type.getDirection(gameState, null);
+            direction = this.type.getDirection(gameState, null, this.where);
         else
-            direction = this.type.getDirection(gameState, map);
+            direction = this.type.getDirection(gameState, map, this.where);
 
         switch (direction) {
             case 1:
@@ -153,6 +153,10 @@ public class Unit {
 
     public long getY() {
         return (where.y);
+    }
+
+    public byte getId() {
+        return (id);
     }
 
     public Double getCurenthp() {

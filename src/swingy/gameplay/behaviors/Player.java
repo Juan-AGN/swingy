@@ -1,6 +1,7 @@
 package swingy.gameplay.behaviors;
 
 import swingy.gameplay.Behavior;
+import swingy.gameplay.Coordinates;
 import swingy.gameplay.GameData;
 import swingy.utils.TakeInput;
 
@@ -10,7 +11,7 @@ public class Player extends Behavior {
     }
 
     @Override 
-    public byte getDirection(GameData info, boolean [][] map) {
+    public byte getDirection(GameData info, boolean [][] map, Coordinates where) {
         int key;
 
         key = TakeInput.getInput();

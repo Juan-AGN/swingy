@@ -1,6 +1,7 @@
 package swingy.gameplay.roles;
 import swingy.gameplay.Role;
 import swingy.gameplay.Stats;
+import swingy.view.Sprites;
 
 public class Tank extends Role {
     final private double chp = 300;
@@ -17,6 +18,14 @@ public class Tank extends Role {
     public Tank(long plevel) {
         this.basestats = new Stats(chp + (lhp * plevel), cad + (lad * plevel), carm + (larm * plevel));
         this.level = plevel;
+    }
+
+    @Override
+    public int getSpriteId(boolean player) {
+        if (player)
+            return (Sprites.PLAYER_TANK);
+        else
+            return (Sprites.ENEMY_THIEF);
     }
 
     @Override

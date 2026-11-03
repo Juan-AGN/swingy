@@ -6,6 +6,7 @@ public final class Sprites {
 
     public static final String []imgRoutes = {
         "imgs/playertank.png",
+        "imgs/thief_en.png",
         "imgs/grass.png",
         "imgs/tree.png",
         "imgs/background.png"
@@ -13,12 +14,13 @@ public final class Sprites {
 
     private static final Sprites INSTANCE = new Sprites();
 
-    Sprite[] allSprites;
+    public Sprite[] allSprites;
 
     public static final byte PLAYER_TANK = 0;
-    public static final byte GRASS = 1;
-    public static final byte TREE = 2;
-    public static final byte BACKGROUND = 3;
+    public static final byte GRASS = 2;
+    public static final byte TREE = 3;
+    public static final byte BACKGROUND = 4;
+    public static final byte ENEMY_THIEF = 1;
 
     Sprites() {
         allSprites = new Sprite[imgRoutes.length];

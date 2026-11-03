@@ -13,11 +13,12 @@ public class Sprite {
                 pixelmap[y][x] = new Pixel(toCopy.pixelmap[y][x]);
     }
 
-    public void fuseSprite(Sprite other) {
+    public Sprite fuseSprite(Sprite other) {
         for (int y = 0; y < 16; y++)
             for (int x = 0; x < 16; x++)
                 if (!other.pixelmap[y][x].transparency)
                     this.pixelmap[y][x] = new Pixel(other.pixelmap[y][x]);
+        return (this);
     }
 
     public void createErrorSprite() {

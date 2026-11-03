@@ -38,13 +38,14 @@ public class Gameplay {
                 default:
                     break;
             }
+            gameState.enemies.frame(ms, gameState);
 
             printer.termShowState(gameState);
         }
     } 
 
     public static void main(String[] args) {
-        Unit player = new Unit(0, NameGenerator.generateName(), new Tank(1), new Player());
+        Unit player = new Unit((byte)0, NameGenerator.generateName(), new Tank(1), new Player());
         Gameplay game = new Gameplay();
         try {
             TakeInput.initTerminal();

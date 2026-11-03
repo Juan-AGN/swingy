@@ -16,6 +16,8 @@ public abstract class Role{
         return (this.basestats.getAd());
     };
 
+    public abstract int getSpriteId(boolean player);
+
     protected void setNewlevel() {
         level += 1;
         exp = exp - tolevel;

@@ -1,12 +1,9 @@
 package swingy.view;
 
-import java.util.Map;
-
 import swingy.gameplay.Coordinates;
 import swingy.gameplay.GameData;
 import swingy.gameplay.Unit;
 import swingy.gameplay.mapgenerator.GMap;
-import swingy.utils.NameGenerator;
 
 public class TermPrinter {
     public void setup() {};
@@ -17,12 +14,15 @@ public class TermPrinter {
     private Pixel [][]minimap = new Pixel[34][144];
     private GMap map;
     private boolean[][] vision;
-    private byte amplify = 0;
+    static private byte amplify = 0;
 
     public TermPrinter(GameData gameState) {
         int length = gameState.getMap().getMap().length;
         map = gameState.getMap();
         vision = new boolean[length][length];
+        for (int y = 0; y < minimap.length; y ++)
+            for (int x = 0; x < minimap[0].length; x ++)
+                minimap[y][x] = new Pixel(255, 255, 224);
     }
 
     public void miniMapSize() {
@@ -47,8 +47,9 @@ public class TermPrinter {
 
     private void checkWalls(GameData gameState) {
         Unit player = gameState.getPlayer();
-        Sprite wall = new Sprite(Sprites.getInstance().allSprites[Sprites.GRASS]);
         Sprite empty = new Sprite(Sprites.getInstance().allSprites[Sprites.BACKGROUND]);
+        Sprite wall = new Sprite(Sprites.getInstance().allSprites[Sprites.GRASS]);
+        
         wall.fuseSprite(Sprites.getInstance().allSprites[Sprites.TREE]);
         int basey = (int)player.getY() - (fovy / 2);
         int y = 0;
@@ -68,10 +69,16 @@ public class TermPrinter {
         }
     }
 
-    private void putPlayer(GameData gameState) {
-        Sprite player = new Sprite(Sprites.getInstance().allSprites[Sprites.GRASS]);
-        player.fuseSprite(Sprites.getInstance().allSprites[Sprites.PLAYER_TANK]); 
-        this.mapTab[(fovy / 2)][(fovx / 2)] = player;
+    private void putUnits(GameData gameState) {
+        Unit player = gameState.getPlayer();
+        int basey = (int)player.getY() - (fovy / 2);
+        int y = 0;
+        int basex = (int)player.getX() - (fovx / 2);
+
+        for (; y < fovy; y++)
+            for (int x = 0; x < fovx; x++)
+                if (gameState.hasEnemy(new Coordinates(x + basex, y + basey)))
+                    this.mapTab[y][x] = new Sprite(mapTab[y][x]).fuseSprite(gameState.getUnitSprite(new Coordinates(x + basex, y + basey)));
     }
 
     private void setupMinimap(GameData gameState) {
@@ -98,6 +105,8 @@ public class TermPrinter {
                             continue ;
                         if (player.getY() == basey + y && player.getX() == basex + x)
                             this.minimap[ny + county][nx + countx] = new Pixel(102, 102, 255);
+                        else if (gameState.hasEnemy(new Coordinates(x + basex, y + basey)))
+                            this.minimap[ny + county][nx + countx] = new Pixel(255, 0, 0);
                         else if (!map.isInside(new Coordinates(x + basex, y + basey)) || !vision[y + basey][x + basex])
                             this.minimap[ny + county][nx + countx] = new Pixel(255, 255, 224);
                         else if (map.hasWall(new Coordinates(x + basex, y + basey)))
@@ -160,7 +169,7 @@ public class TermPrinter {
     public void termShowState(GameData gameState) {
         setGround();
         checkWalls(gameState);
-        putPlayer(gameState);
+        putUnits(gameState);
         setupMinimap(gameState);
         printTabs();
     }
