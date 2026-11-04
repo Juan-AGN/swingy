@@ -2,7 +2,7 @@ package swingy.gameplay;
 
 import java.util.Vector;
 
-import swingy.gameplay.behaviors.Jester;
+import swingy.gameplay.behaviors.*;
 import swingy.gameplay.roles.Assasin;
 import swingy.gameplay.roles.Tank;
 import swingy.gameplay.roles.Warrior;
@@ -47,6 +47,14 @@ public class EnemyHandler {
                 return (new Unit(units.elementAt(i)));
         
         return (null);
+    }
+
+    public Vector<Coordinates> getEnemyCoords() {
+        Vector<Coordinates> toret = new Vector<Coordinates>();
+        for (int i = 0; i < units.size(); i ++)
+           toret.add(new Coordinates(units.elementAt(i).where));
+        
+        return (toret);
     }
 
     public Vector<Unit> getEnemy(Coordinates where) {
@@ -110,7 +118,13 @@ public class EnemyHandler {
                 setRole = new Warrior(level);
         }
 
-        switch(TrueRandom.getrandom(1)) {
+        switch(TrueRandom.getrandom(2)) {
+            case 0:
+                setBehavior = new Jester();
+                break;
+            case 1:
+                setBehavior = new Runner();
+                break;
             default:
                 setBehavior = new Jester();
         }

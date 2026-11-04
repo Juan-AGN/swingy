@@ -1,5 +1,7 @@
 package swingy.view;
 
+import java.util.Vector;
+
 import swingy.gameplay.Coordinates;
 import swingy.gameplay.GameData;
 import swingy.gameplay.Unit;
@@ -72,13 +74,18 @@ public class TermPrinter {
     private void putUnits(GameData gameState) {
         Unit player = gameState.getPlayer();
         int basey = (int)player.getY() - (fovy / 2);
-        int y = 0;
         int basex = (int)player.getX() - (fovx / 2);
+        Vector<Coordinates> enemylocs = gameState.getEnemyCoords();
 
-        for (; y < fovy; y++)
-            for (int x = 0; x < fovx; x++)
-                if (gameState.hasEnemy(new Coordinates(x + basex, y + basey)))
-                    this.mapTab[y][x] = new Sprite(mapTab[y][x]).fuseSprite(gameState.getUnitSprite(new Coordinates(x + basex, y + basey)));
+        for (int i = 0; i < enemylocs.size(); i++)
+        {
+            Coordinates location = enemylocs.elementAt(i);
+            int y = (int)(location.gety() - basey);
+            int x = (int)(location.getx() - basex);
+
+            if (x >= 0 && x < fovx && y >= 0 && y < fovy)
+                this.mapTab[y][x] = new Sprite(mapTab[y][x]).fuseSprite(gameState.getUnitSprite(new Coordinates(location.getx(), location.gety())));
+        }
     }
 
     private void setupMinimap(GameData gameState) {
@@ -86,12 +93,16 @@ public class TermPrinter {
         int amplified = 1 + amplify;
         int fovy = 34;
         int fovx = 144;
-        int restx = ((minimap[0].length - (fovx / amplified) * amplified) / 2) - amplify;
-        int resty = ((minimap.length - (fovy / amplified) * amplified) / 2);
-        int basey = (int) player.getY() - (fovy / amplified) / 2;
+        int visibleRows = (fovy + amplified - 1) / amplified;
+        int restx = (minimap[0].length - (fovx / amplified) * amplified) / 2;
+        int resty = (minimap.length - visibleRows * amplified) / 2;
+        int playerX = (int)player.getX();
+        int playerY = (int)player.getY();
+        int basey = playerY - visibleRows / 2;
         int basex = (int) player.getX() - (fovx / amplified) / 2;
+        Vector<Coordinates> enemylocs = gameState.getEnemyCoords();
 
-        for (int y = 0; y < (fovy / amplified); y++) {
+        for (int y = 0; y < visibleRows; y++) {
             for (int x = 0; x < (fovx / amplified); x++)
             {
                 for (int countx = 0; countx < amplified; countx++)
@@ -105,8 +116,6 @@ public class TermPrinter {
                             continue ;
                         if (player.getY() == basey + y && player.getX() == basex + x)
                             this.minimap[ny + county][nx + countx] = new Pixel(102, 102, 255);
-                        else if (gameState.hasEnemy(new Coordinates(x + basex, y + basey)))
-                            this.minimap[ny + county][nx + countx] = new Pixel(255, 0, 0);
                         else if (!map.isInside(new Coordinates(x + basex, y + basey)) || !vision[y + basey][x + basex])
                             this.minimap[ny + county][nx + countx] = new Pixel(255, 255, 224);
                         else if (map.hasWall(new Coordinates(x + basex, y + basey)))
@@ -117,6 +126,29 @@ public class TermPrinter {
                 }
             }
         }
+
+        for (int i = 0; i < enemylocs.size(); i++)
+        {
+            Coordinates location = enemylocs.elementAt(i);
+            int ny = (int)(((location.gety() - basey) * amplified) + resty);
+            int nx = (int)(((location.getx() - basex) * amplified) + restx);
+
+            for (int countx = 0; countx < amplified; countx++)
+            {
+                for (int county = 0; county < amplified; county++)
+                {
+                    if (ny + county < 0 || nx + countx < 0 || nx + countx >= minimap[0].length || ny + county >= minimap.length)
+                        continue ;
+                    this.minimap[ny + county][nx + countx] = new Pixel(255, 0, 0);
+                }
+            }
+        }
+
+        int playerPixelY = ((playerY - basey) * amplified) + resty;
+        int playerPixelX = ((playerX - basex) * amplified) + restx;
+        for (int countx = 0; countx < amplified; countx++)
+            for (int county = 0; county < amplified; county++)
+                this.minimap[(int)(playerPixelY + county)][(int)(playerPixelX + countx)] = new Pixel(102, 102, 255);
     }
 
     private void printTabs() {

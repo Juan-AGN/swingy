@@ -164,11 +164,11 @@ public class Unit {
     }
 
     public Double getDamage() {
-        return (this.getDamage());
+        return (this.unitrole.getAttack());
     }
 
     public Stats getStats() {
-        return (this.getStats());
+        return (this.unitrole.getStats());
     }
 
     public long getLevel() {

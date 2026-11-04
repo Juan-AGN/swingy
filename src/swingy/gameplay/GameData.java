@@ -1,4 +1,7 @@
 package swingy.gameplay;
+
+import java.util.Vector;
+
 import swingy.gameplay.mapgenerator.GMap;
 import swingy.view.Sprite;
 
@@ -31,6 +34,10 @@ public class GameData {
 
     public Sprite getUnitSprite(Coordinates where) {
         return (enemies.getUnitSprite(where));
+    }
+
+    public Vector<Coordinates> getEnemyCoords() {
+        return (enemies.getEnemyCoords());
     }
 
     public final Unit getPlayer() {
