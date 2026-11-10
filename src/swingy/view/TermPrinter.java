@@ -114,9 +114,8 @@ public class TermPrinter {
 
                         if (ny + county < 0 || nx + countx < 0 || nx + countx >= minimap[0].length || ny + county >= minimap.length)
                             continue ;
-                        if (player.getY() == basey + y && player.getX() == basex + x)
-                            this.minimap[ny + county][nx + countx] = new Pixel(102, 102, 255);
-                        else if (!map.isInside(new Coordinates(x + basex, y + basey)) || !vision[y + basey][x + basex])
+
+                        if (!map.isInside(new Coordinates(x + basex, y + basey)) || !vision[y + basey][x + basex])
                             this.minimap[ny + county][nx + countx] = new Pixel(255, 255, 224);
                         else if (map.hasWall(new Coordinates(x + basex, y + basey)))
                             this.minimap[ny + county][nx + countx] = new Pixel(160, 160, 160);

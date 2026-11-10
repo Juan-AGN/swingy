@@ -2,3 +2,5 @@ a
 b
 *.class
 .vscode/*
+sources.txt
+out/*

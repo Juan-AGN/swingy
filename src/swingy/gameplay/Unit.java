@@ -27,6 +27,8 @@ public class Unit {
         unitrole = punitrole;
         currenthp = unitrole.getStats().getHp();
         type = ptype;
+        basecooldown = type.cd;
+        cooldown = basecooldown;
     }
 
     public Unit(byte pid, String pname, Role punitrole, Coordinates pwhere, Behavior ptype) {
@@ -36,6 +38,8 @@ public class Unit {
         unitrole = punitrole;
         currenthp = unitrole.getStats().getHp();
         type = ptype;
+        basecooldown = type.cd;
+        cooldown = basecooldown;
     }
 
     public Unit(byte pid, String pname, Role punitrole, double cd, boolean active, Behavior ptype) {

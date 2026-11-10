@@ -8,6 +8,7 @@ import swingy.utils.TakeInput;
 public class Player extends Behavior {
     public Player() {
         this.id = 0;
+        this.cd = 100;
     }
 
     @Override 

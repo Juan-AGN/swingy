@@ -2,6 +2,7 @@ package swingy.gameplay;
 
 public abstract class Behavior {
     protected byte id;
+    protected int cd;
 
     public abstract byte getDirection(GameData info, boolean [][] map, Coordinates where);
 }

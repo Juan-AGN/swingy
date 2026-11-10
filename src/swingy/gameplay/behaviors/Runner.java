@@ -9,6 +9,7 @@ public class Runner extends Behavior {
     public Runner() {
         this.id = 2;
         this.previous = (byte)(TrueRandom.getrandom(4) + 1);
+        this.cd = 300;
     }
 
     private byte previous;

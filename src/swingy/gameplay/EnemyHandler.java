@@ -12,6 +12,7 @@ import swingy.view.Sprite;
 import swingy.view.Sprites;
 
 import java.util.Set;
+import java.util.BitSet;
 import java.util.HashSet;
 
 public class EnemyHandler {
@@ -22,6 +23,15 @@ public class EnemyHandler {
     private int cooldown = 5000;
     private Unit player;
     private boolean[][] tmap;
+    private BitSet enemylocs;
+
+    private int getIndex(long x, long y) {
+        return ((int)(y * tmap[0].length + x));
+    }
+
+    private int getIndex(Coordinates where) {
+        return ((int)(where.gety() * tmap[0].length + where.getx()));
+    }
 
     public EnemyHandler(Unit pplayer, GameData game) {
         for (byte i = 1; i <= maxEnemy; i ++)
@@ -29,6 +39,7 @@ public class EnemyHandler {
         player = pplayer;
         units.add(game.player);
         tmap = game.map.getMap();
+        enemylocs = new BitSet(tmap.length * tmap[0].length);
     }
 
     private Vector<Unit> getWholeEnemy(Coordinates where) {
@@ -76,11 +87,7 @@ public class EnemyHandler {
     }
 
     public boolean hasEnemy(Coordinates where) {
-        for (int i = 0; i < units.size(); i ++)
-            if (units.elementAt(i).where.compare(where))
-                return (true);
-        
-        return (false);
+        return enemylocs.get(getIndex(where.getx(), where.gety()));
     }
 
     public boolean hasEnemy(byte pid) {
@@ -129,7 +136,7 @@ public class EnemyHandler {
                 setBehavior = new Jester();
         }
 
-        units.add(new Unit(sid, NameGenerator.generateName(), setRole, spawn, 300, false, setBehavior));
+        units.add(new Unit(sid, NameGenerator.generateName(), setRole, spawn, setBehavior));
     }
 
     public void removeUnit(Unit who) {
@@ -139,7 +146,9 @@ public class EnemyHandler {
     }
 
     public void frame(int ms, GameData game) {
-        for (int i = 0; i < units.size(); i ++)
+        Vector<Coordinates> newcoords;
+
+        for (int i = units.size() - 1; i >= 0; i--)
             if (!game.isInside(units.elementAt(i).where) && units.elementAt(i).getId() != 0)
                 removeUnit(units.elementAt(i));
         cooldown -= ms;
@@ -148,6 +157,13 @@ public class EnemyHandler {
 
         for (int i = 0; i < units.size(); i ++)
             units.elementAt(i).activity(ms, game, tmap);
+
+        enemylocs.clear();
+        newcoords = getEnemyCoords();
+
+        for (int i = 0; i < newcoords.size(); i ++)
+            if (game.isInside(newcoords.elementAt(i)))
+                enemylocs.set(getIndex(newcoords.elementAt(i)));
     }
 
     public Sprite getUnitSprite(Coordinates where) {
