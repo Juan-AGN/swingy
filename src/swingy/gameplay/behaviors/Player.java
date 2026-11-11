@@ -26,7 +26,9 @@ public class Player extends Behavior {
                 case 'd':
                     return (4);
                 case ' ':
-                    return (5);
+                    return (' ');
+                case 'n':
+                    return ('n');
                 default:
                     return (-1);
             }

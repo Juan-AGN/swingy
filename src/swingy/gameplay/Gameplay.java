@@ -23,24 +23,37 @@ public class Gameplay {
     public void loop() {
         int setenemycooldown = 1500;
         int enemycooldown = 0;
+        int basems = 100;
         int ms = 100;
+        long startTime = System.currentTimeMillis();
+        long endTime = System.currentTimeMillis();
+        int elapsed = 0;
         TermPrinter printer = new TermPrinter(gameState);
 
         printer.termShowState(gameState);
         while (gameState.isInside(gameState.player.where))
         {
-            Sleep.wait(ms);
+            ms = basems - elapsed;
+            if (ms > 0)
+                Sleep.wait(ms);
+            else
+                ms = 1;
+            startTime = System.currentTimeMillis();
 
-            switch (gameState.player.activity(ms, gameState, null)) {
-                case 5:
+            switch (gameState.player.activity(basems, gameState, null)) {
+                case ' ':
                     printer.miniMapSize();
                     break;
+                case 'n':
+                    return;
                 default:
                     break;
             }
-            gameState.enemies.frame(ms, gameState);
-
+            gameState.enemies.frame(basems, gameState);
             printer.termShowState(gameState);
+            endTime = System.currentTimeMillis();
+            elapsed = (int)(endTime - startTime);
+            System.out.println(elapsed);
         }
     } 
 
