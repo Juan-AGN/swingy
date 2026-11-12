@@ -14,6 +14,7 @@ import swingy.view.Sprites;
 import java.util.Set;
 import java.util.BitSet;
 import java.util.HashSet;
+import swingy.utils.GetIndexBit;;
 
 public class EnemyHandler {
     protected Vector<Unit>  units = new Vector<Unit>();
@@ -24,14 +25,6 @@ public class EnemyHandler {
     private Unit player;
     private boolean[][] tmap;
     private BitSet enemylocs;
-
-    private int getIndex(long x, long y) {
-        return ((int)(y * tmap[0].length + x));
-    }
-
-    private int getIndex(Coordinates where) {
-        return ((int)(where.gety() * tmap[0].length + where.getx()));
-    }
 
     public EnemyHandler(Unit pplayer, GameData game) {
         for (byte i = 1; i <= maxEnemy; i ++)
@@ -87,7 +80,7 @@ public class EnemyHandler {
     }
 
     public boolean hasEnemy(Coordinates where) {
-        return enemylocs.get(getIndex(where.getx(), where.gety()));
+        return enemylocs.get(GetIndexBit.getIndex(where.getx(), where.gety(), tmap[0].length));
     }
 
     public boolean hasEnemy(byte pid) {
@@ -163,7 +156,7 @@ public class EnemyHandler {
 
         for (int i = 0; i < newcoords.size(); i ++)
             if (game.isInside(newcoords.elementAt(i)))
-                enemylocs.set(getIndex(newcoords.elementAt(i)));
+                enemylocs.set(GetIndexBit.getIndex(newcoords.elementAt(i), tmap[0].length ));
     }
 
     public Sprite getUnitSprite(Coordinates where) {
