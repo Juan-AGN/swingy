@@ -41,6 +41,18 @@ public class GMap {
         return (true);
     }
 
+    public boolean isInside(int x, int y) {
+        return (x >= 0 && y >= 0 && x < mapsize.getx() && y < mapsize.gety());
+    }
+
+    public boolean hasWall(int x, int y) {
+        if (!isInside(x, y))
+            return (false);
+        else if (map[(int)y][(int)x])
+            return (false);
+        return (true);
+    }
+
     public boolean[][] getMap() {
         boolean [][]toret = new boolean[map.length][map[0].length];
     

@@ -28,6 +28,22 @@ public class GameData {
         return (map.hasWall(toCheck));
     }
 
+    public boolean isInside(int x, int y) {
+        return (map.isInside(x, y));
+    }
+
+    public boolean hasWall(int x, int y) {
+        return (map.hasWall(x, y));
+    }
+
+    public boolean isInside(long x, long y) {
+        return (map.isInside((int)x, (int)y));
+    }
+
+    public boolean hasWall(long x, long y) {
+        return (map.hasWall((int)x, (int)y));
+    }
+
     public boolean hasEnemy(Coordinates where) {
         return (enemies.hasEnemy(where));
     }
