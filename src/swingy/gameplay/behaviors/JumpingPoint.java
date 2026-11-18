@@ -122,39 +122,158 @@ public class JumpingPoint extends Behavior {
         if (info.hasEnemy(new Coordinates(x, y)))
         {
             this.addFound(x, y, pcost, (byte)2, pprevious);
-            return true;
+            return (true);
         }
 
         short pos = (short)GetIndexBit.getIndex(x, y, W);
         if (info.isInside(x - 1, y + 1))
-            if (!info.hasWall(x - 1, y + 1) && (info.hasWall(x, y + 1) && !info.hasWall(x - 1, y)) || (info.hasWall(x - 1, y) && !info.hasWall(x, y + 1)) && !explored.get(pos))
+            if (!info.hasWall(x - 1, y + 1) && (info.hasWall(x, y + 1) && !info.hasWall(x - 1, y)) || (info.hasWall(x - 1, y) && !info.hasWall(x, y + 1)) && !explored.get(GetIndexBit.getIndex(x - 1, y + 1, W)))
                 jumper = setJumpingPoint(info, x - 1, y + 1, pcost + 2, BOTTOMLEFT, pos, false);
         if (info.isInside(x - 1, y - 1))
-            if (!info.hasWall(x - 1, y - 1) && (info.hasWall(x, y - 1) && !info.hasWall(x - 1, y)) || (info.hasWall(x - 1, y) && !info.hasWall(x, y - 1)) && !explored.get(pos))
+            if (!info.hasWall(x - 1, y - 1) && (info.hasWall(x, y - 1) && !info.hasWall(x - 1, y)) || (info.hasWall(x - 1, y) && !info.hasWall(x, y - 1)) && !explored.get(GetIndexBit.getIndex(x - 1, y - 1, W)))
                 jumper = setJumpingPoint(info, x - 1, y - 1, pcost + 2, UPLEFT, pos, false);
         
         if (jumper)
             setJumpingPoint(info, x - 1, y + 1, pcost, LEFT, pos, true);
 
         if (info.isInside(x - 1, y) && !info.hasWall(x - 1, y))
+        {
             if (jumper == false)
                 return (jumpLeft(info, map, x, y, prevdir, pcost, pprevious));
+            else
+                jumpLeft(info, map, x - 1, y, prevdir, pcost, pprevious);
+        }
+        return (true);
     }
 
-    private boolean jumpRight(GameData info, boolean [][] map, long x, long y, byte prevdir, int pcost, short pprevious) {
-        
+    private boolean jumpRight(GameData info, boolean[][] map, long x, long y, byte prevdir, int pcost, short pprevious) {
+        boolean jumper = false;
+        pcost++;
+
+        if (!info.isInside(x, y) || pcost > MAX_MOVEMENT_COST)
+            return false;
+
+        if (info.hasEnemy(new Coordinates(x, y))) {
+            this.addFound(x, y, pcost, (byte) 2, pprevious);
+            return (true);
+        }
+
+        short pos = (short) GetIndexBit.getIndex(x, y, W);
+
+        if (info.isInside(x + 1, y + 1))
+            if (!info.hasWall(x + 1, y + 1) && ((info.hasWall(x, y + 1) && !info.hasWall(x + 1, y)) || (info.hasWall(x + 1, y) && !info.hasWall(x, y + 1))) && !explored.get(GetIndexBit.getIndex(x + 1, y + 1, W)))
+                jumper = setJumpingPoint(info, x + 1, y + 1, pcost + 2, BOTTOMRIGHT, pos, false);
+
+        if (info.isInside(x + 1, y - 1))
+            if (!info.hasWall(x + 1, y - 1) && ((info.hasWall(x, y - 1) && !info.hasWall(x + 1, y)) || (info.hasWall(x + 1, y) && !info.hasWall(x, y - 1))) && !explored.get(GetIndexBit.getIndex(x + 1, y - 1, W)))
+                jumper = setJumpingPoint(info, x + 1, y - 1, pcost + 2, UPRIGHT, pos, false);
+
+        if (jumper)
+            setJumpingPoint(info, x + 1, y + 1, pcost, RIGHT, pos, true);
+
+        if (info.isInside(x + 1, y) && !info.hasWall(x + 1, y)) {
+            if (jumper == false)
+                return (jumpRight(info, map, x + 1, y, prevdir, pcost, pprevious));
+            else
+                jumpRight(info, map, x + 1, y, prevdir, pcost, pprevious);
+        }
+
+        return (true);
     }
 
-    private boolean jumpDown(GameData info, boolean [][] map, long x, long y, byte prevdir, int pcost, short pprevious) {
-        
+
+    private boolean jumpDown(GameData info, boolean[][] map, long x, long y, byte prevdir, int pcost, short pprevious) {
+        boolean jumper = false;
+        pcost++;
+
+        if (!info.isInside(x, y) || pcost > MAX_MOVEMENT_COST)
+            return false;
+
+        if (info.hasEnemy(new Coordinates(x, y))) {
+            this.addFound(x, y, pcost, (byte) 2, pprevious);
+            return (true);
+        }
+
+        short pos = (short) GetIndexBit.getIndex(x, y, W);
+
+        if (info.isInside(x - 1, y + 1))
+            if (!info.hasWall(x - 1, y + 1) && ((info.hasWall(x - 1, y) && !info.hasWall(x, y + 1)) || (info.hasWall(x, y + 1) && !info.hasWall(x - 1, y))) && !explored.get(GetIndexBit.getIndex(x - 1, y + 1, W)))
+                jumper = setJumpingPoint(info, x - 1, y + 1, pcost + 2, BOTTOMLEFT, pos, false);
+
+        if (info.isInside(x + 1, y + 1))
+            if (!info.hasWall(x + 1, y + 1) && ((info.hasWall(x + 1, y) && !info.hasWall(x, y + 1)) || (info.hasWall(x, y + 1) && !info.hasWall(x + 1, y))) && !explored.get(GetIndexBit.getIndex(x + 1, y + 1, W)))
+                jumper = setJumpingPoint(info, x + 1, y + 1, pcost + 2, BOTTOMRIGHT, pos, false);
+
+        if (jumper)
+            setJumpingPoint(info, x - 1, y + 1, pcost, BOTTOM, pos, true);
+
+        if (info.isInside(x, y + 1) && !info.hasWall(x, y + 1)) {
+            if (jumper == false)
+                return (jumpDown(info, map, x, y + 1, prevdir, pcost, pprevious));
+            else
+                jumpDown(info, map, x, y + 1, prevdir, pcost, pprevious);
+        }
+
+        return (true);
     }
 
-    private boolean jumpUp(GameData info, boolean [][] map, long x, long y, byte prevdir, int pcost, short pprevious) {
-        
+
+    private boolean jumpUp(GameData info, boolean[][] map, long x, long y, byte prevdir, int pcost, short pprevious) {
+        boolean jumper = false;
+        pcost++;
+
+        if (!info.isInside(x, y) || pcost > MAX_MOVEMENT_COST)
+            return false;
+
+        if (info.hasEnemy(new Coordinates(x, y))) {
+            this.addFound(x, y, pcost, (byte) 2, pprevious);
+            return (true);
+        }
+
+        short pos = (short) GetIndexBit.getIndex(x, y, W);
+
+        if (info.isInside(x - 1, y - 1))
+            if (!info.hasWall(x - 1, y - 1) && ((info.hasWall(x - 1, y) && !info.hasWall(x, y - 1)) || (info.hasWall(x, y - 1) && !info.hasWall(x - 1, y))) && !explored.get(GetIndexBit.getIndex(x - 1, y - 1, W)))
+                jumper = setJumpingPoint(info, x - 1, y - 1, pcost + 2, UPLEFT, pos, false);
+
+        if (info.isInside(x + 1, y - 1))
+            if (!info.hasWall(x + 1, y - 1) && ((info.hasWall(x + 1, y) && !info.hasWall(x, y - 1)) || (info.hasWall(x, y - 1) && !info.hasWall(x + 1, y))) && !explored.get(GetIndexBit.getIndex(x + 1, y - 1, W)))
+                jumper = setJumpingPoint(info, x + 1, y - 1, pcost + 2, UPRIGHT, pos, false);
+
+        if (jumper)
+            setJumpingPoint(info, x - 1, y - 1, pcost, UP, pos, true);
+
+        if (info.isInside(x, y - 1) && !info.hasWall(x, y - 1)) {
+            if (jumper == false)
+                return (jumpUp(info, map, x, y - 1, prevdir, pcost, pprevious));
+            else
+                jumpUp(info, map, x, y - 1, prevdir, pcost, pprevious);
+        }
+
+        return (true);
     }
 
-    private boolean jumpLeftUp(GameData info, boolean [][] map, long x, long y, byte prevdir, int pcost, short pprevious) {
-        
+    private void jumpLeftUp(GameData info, boolean [][] map, long x, long y, byte prevdir, int pcost, short pprevious) {
+        pcost += 2;
+        boolean jumper = false;
+        if (!info.isInside(x, y) || pcost > MAX_MOVEMENT_COST)
+            return ;
+        short pos = (short) GetIndexBit.getIndex(x, y, W);
+
+        if (info.isInside(x - 1, y))
+            if (!info.hasWall(x - 1, y) && !explored.get(GetIndexBit.getIndex(x -1, y, W)))
+                jumper = jumpUp(info, map, x - 1, y, prevdir, pcost - 1, pprevious);
+
+        if (info.isInside(x, y - 1))
+            if (!info.hasWall(x, y - 1) && !explored.get(GetIndexBit.getIndex(x, y - 1, W)))
+                jumper = jumpLeft(info, map, x, y - 1, prevdir, pcost - 1, pprevious) || jumper == true ? true : false;
+        if (jumper == true)
+            setForcedJumpingPoint(info, x, y, pcost, UPLEFT, pprevious);
+
+
+        if (info.isInside(x - 1, y - 1))
+            if (!info.hasWall(x - 1, y - 1) && ((info.hasWall(x - 1, y) && !info.hasWall(x, y - 1)) || (info.hasWall(x, y - 1) && !info.hasWall(x - 1, y))) && !explored.get(GetIndexBit.getIndex(x - 1, y - 1, W)))
+                jumpLeftUp(info, map, x - 1, y - 1, UPLEFT, pcost, pprevious);
     }
 
     private boolean jumpRightUp(GameData info, boolean [][] map, long x, long y, byte prevdir, int pcost, short pprevious) {
@@ -173,6 +292,16 @@ public class JumpingPoint extends Behavior {
 
     }
 
+    private void setForcedJumpingPoint(GameData info, long x, long y, int pcost, byte pdir, short pprevious) {
+        short pos = (short)GetIndexBit.getIndex(x, y, W);
+
+        stamp[pos] = id;
+        previous[pos] = pprevious;
+        dir[pos] = pdir;
+        cost[pos] = (short)pcost;
+        explored.set(pos);
+    }
+
     private boolean setJumpingPoint(GameData info, long x, long y, int pcost, byte pdir, short pprevious, boolean pexplored) {
         short pos = (short)GetIndexBit.getIndex(x, y, W);
         int i = 0;
@@ -181,11 +310,11 @@ public class JumpingPoint extends Behavior {
         if (info.hasEnemy(new Coordinates(x, y)))
         {
             this.addFound(x, y, pcost, pdir, pprevious);
-            return true;
+            return (true);
         }
 
         if ((stamp[pos] == id && cost[pos] < pcost) || explored.get(pos))
-            return true;
+            return (true);
 
         stamp[pos] = id;
         previous[pos] = pprevious;
@@ -197,9 +326,9 @@ public class JumpingPoint extends Behavior {
         if (prio[0] == -1)
         {
             prio[0] = pos;
-            return true;
+            return (true);
         }
-        for (; prio[i] != -1 && cost[prio[i]] > pcost; i ++) {};
+        for (; prio[i] != -1 && cost[prio[i]] >= pcost; i ++) {};
 
         temp = prio[i];
         prio[i] = temp;
@@ -216,7 +345,7 @@ public class JumpingPoint extends Behavior {
         short pos = (short)GetIndexBit.getIndex(x, y, W);
 
         if (found != -1)
-            if (cost[found] < pcost)
+            if (cost[found] <= pcost)
                 return ;
         stamp[pos] = id;
         previous[pos] = pprevious;
