@@ -46,6 +46,9 @@ public class Gameplay {
                     break;
                 case 'n':
                     return;
+                case 'l':
+                    gameState.enemies.spawn(gameState);;
+                    break;
                 default:
                     break;
             }

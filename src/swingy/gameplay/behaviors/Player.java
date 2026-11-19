@@ -30,7 +30,7 @@ public class Player extends Behavior {
                 case 'n':
                     return ('n');
                 default:
-                    return (-1);
+                    return ((byte)key);
             }
     }
     

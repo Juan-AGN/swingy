@@ -83,6 +83,10 @@ public class EnemyHandler {
         return enemylocs.get(GetIndexBit.getIndex(where.getx(), where.gety(), tmap[0].length));
     }
 
+    public boolean hasPlayer(Coordinates where) {
+        return (where.getx() == player.getX() && where.gety() == player.getY());
+    }
+
     public boolean hasEnemy(byte pid) {
         for (int i = 0; i < units.size(); i ++)
             if (units.elementAt(i).getId() == pid)
@@ -120,13 +124,13 @@ public class EnemyHandler {
 
         switch(TrueRandom.getrandom(2)) {
             case 0:
-                setBehavior = new Jester();
+                setBehavior = new JumpingPointPlayer();
                 break;
             case 1:
-                setBehavior = new Runner();
+                setBehavior = new JumpingPointPlayer();
                 break;
             default:
-                setBehavior = new Jester();
+                setBehavior = new JumpingPointPlayer();
         }
 
         units.add(new Unit(sid, NameGenerator.generateName(), setRole, spawn, setBehavior));

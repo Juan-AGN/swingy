@@ -12,7 +12,7 @@ public class GameData {
 
     public GameData(GMap pmap, Unit pplayer) {
         map = new GMap(pmap);
-        player = new Unit(pplayer);
+        player = pplayer;
         enemies = new EnemyHandler(pplayer, this);
     }
 
@@ -46,6 +46,10 @@ public class GameData {
 
     public boolean hasEnemy(Coordinates where) {
         return (enemies.hasEnemy(where));
+    }
+
+    public boolean hasPlayer(Coordinates where) {
+        return (enemies.hasPlayer(where));
     }
 
     public Sprite getUnitSprite(Coordinates where) {

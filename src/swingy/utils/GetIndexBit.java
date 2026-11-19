@@ -10,4 +10,10 @@ public final class GetIndexBit {
     static public int getIndex(Coordinates where, long length) {
         return ((int)(where.gety() * length + where.getx()));
     }
+
+    public static Coordinates getCoordinates(int index, long length) {
+        long x = index % length;
+        long y = index / length;
+        return (new Coordinates(x, y));
+    }
 }
