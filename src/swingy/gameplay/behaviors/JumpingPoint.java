@@ -102,19 +102,19 @@ public class JumpingPoint extends Behavior {
         explored.set(pos);
         if (info.isInside(x + 1, y) && !info.hasWall(x + 1, y))
             jumpRight(info, map, x + 1, y, RIGHT, 0, pos);
-        if (info.isInside(x + 1, y - 1) && ((info.hasWall(x, y - 1) && !info.hasWall(x + 1, y)) || (info.hasWall(x + 1, y) && !info.hasWall(x, y - 1))))
+        if (info.isInside(x + 1, y - 1) && !info.hasWall(x + 1, y - 1) && (!info.hasWall(x + 1, y) || !info.hasWall(x, y - 1)))
             jumpRightUp(info, map, x + 1, y - 1, UPRIGHT, 0, pos);   
         if (info.isInside(x, y - 1) && !info.hasWall(x, y - 1)) 
             jumpUp(info, map, x, y - 1, UP, 0, pos);
-        if (info.isInside(x - 1, y - 1) && !info.hasWall(x - 1, y - 1) && ((info.hasWall(x, y - 1) && !info.hasWall(x - 1, y)) || (info.hasWall(x - 1, y) && !info.hasWall(x, y - 1))))
+        if (info.isInside(x - 1, y - 1) && !info.hasWall(x - 1, y - 1) && (!info.hasWall(x, y - 1) || !info.hasWall(x - 1, y)))
             jumpLeftUp(info, map, x - 1, y - 1, UPLEFT, 0, pos);
         if (info.isInside(x - 1, y) && !info.hasWall(x - 1, y))
             jumpLeft(info, map, x - 1, y, LEFT, 0, pos);
-        if (info.isInside(x - 1, y + 1) && !info.hasWall(x - 1, y + 1) && ((info.hasWall(x, y + 1) && !info.hasWall(x - 1, y)) || (info.hasWall(x - 1, y) && !info.hasWall(x, y + 1))))
+        if (info.isInside(x - 1, y + 1) && !info.hasWall(x - 1, y + 1) && (!info.hasWall(x, y + 1) || !info.hasWall(x - 1, y)))
             jumpLeftBottom(info, map, x - 1, y + 1, BOTTOMLEFT, 0, pos);
         if (info.isInside(x, y + 1) && !info.hasWall(x, y + 1))
             jumpDown(info, map, x, y + 1, BOTTOM, 0, pos);
-        if (info.isInside(x + 1, y + 1) && !info.hasWall(x + 1, y + 1) && ((info.hasWall(x, y + 1) && !info.hasWall(x + 1, y)) || (info.hasWall(x + 1, y) && !info.hasWall(x, y + 1))))
+        if (info.isInside(x + 1, y + 1) && !info.hasWall(x + 1, y + 1) && (!info.hasWall(x + 1, y) || !info.hasWall(x, y + 1)))
             jumpRightBottom(info, map, x + 1, y + 1, BOTTOMRIGHT, 0, pos);
 
         while (prio[0] != -1 && !checkWaste(cost[prio[0]]))
